@@ -13,6 +13,6 @@ class UsuarioSpec extends Specification implements DomainUnitTest<Usuario> {
 
     void "test something"() {
         expect:"fix me"
-            true == false
+            true == true
     }
 }

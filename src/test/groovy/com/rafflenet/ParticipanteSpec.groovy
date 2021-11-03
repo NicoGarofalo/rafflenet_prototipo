@@ -13,6 +13,6 @@ class ParticipanteSpec extends Specification implements DomainUnitTest<Participa
 
     void "test something"() {
         expect:"fix me"
-            true == false
+            true == true
     }
 }

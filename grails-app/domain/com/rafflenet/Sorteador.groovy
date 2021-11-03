@@ -11,23 +11,42 @@ class Sorteador {
         misSorteos nullable: false
     }
 
+    Author() {
+        //Execute post creation code
+        logoNegocio = ""
+        nombreRepresentante = ""
+        misSorteos = []
+    }
+
+    // Author(String _name) {
+    //     name = _name
+
+    //     //Execute post creation code
+    // }
+
     def crearSorteo( String descripPremio, String imgPremio, int durDias, 
-    int tipo, String temtics) {
+    int tipo, String tematicas) {
 
         Sorteo nuevoSorteo = new Sorteo(
             descripcionPremio: descripPremio,
             imagenPremio: imgPremio,
             duracionDias: durDias,
             tipo: tipo,
-            tematicas: temtics,
-            cuponesBeneficio: ''
-            participantes: []
+            tematicas: tematicas,
+            cuponesBeneficio: '',
+            participantes: [],
             ganadorSorteo: null
         )
+
+        misSorteos.add(nuevoSorteo)
 
         return nuevoSorteo
     }
     
+    def decirNombre(){
+        return nombreRepresentante
+    }
+
     def finalizarSorteoManual() {}
 
     def obtenerGanador() {}

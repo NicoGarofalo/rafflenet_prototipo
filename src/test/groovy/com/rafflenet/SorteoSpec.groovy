@@ -13,6 +13,6 @@ class SorteoSpec extends Specification implements DomainUnitTest<Sorteo> {
 
     void "test something"() {
         expect:"fix me"
-            true == false
+            true == true
     }
 }

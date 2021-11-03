@@ -11,7 +11,7 @@ class Participante {
 
     static constraints = {
         localidad blank: false, nullable: false
-        codigoPostal min: 4, blank: false, nullable: false unique: true
+        codigoPostal min: 4, blank: false, nullable: false, unique: true
         misSorteos nullable: false
         misCupones nullable: false
         tematicas nullable: false

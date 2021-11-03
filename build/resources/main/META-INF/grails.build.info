@@ -1,6 +1,6 @@
-#Mon, 01 Nov 2021 23:01:29 -0300
+#Wed, 03 Nov 2021 00:31:58 -0300
 
 info.app.version=0.1
-info.app.name=rafflenet_prototipo
-grails.env=development
+info.app.name=rafflenet
+grails.env=test
 info.app.grailsVersion=5.0.0

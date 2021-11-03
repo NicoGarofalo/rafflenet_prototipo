@@ -12,15 +12,15 @@ class Usuario {
 
     static constraints = {
         nombre blank: false, nullable: false
-        constrasenia min: 5, blank: false, nullable: false
-        email email: true, blank: false, nullable: false unique: true
-        telefono min: 18, blank: false, nullable: false unique: true
+        constrasenia blank: false, nullable: false
+        email email: true, blank: false, nullable: false, unique: true
+        telefono blank: false, nullable: false, unique: true
         rol nullable: false
     }
 
     def cambiarRol() {
         
-        rol == 0 ? rol = 1 : rol = 0
+        // rol == 0 ? rol = 1 : rol = 0
 
     }
 
