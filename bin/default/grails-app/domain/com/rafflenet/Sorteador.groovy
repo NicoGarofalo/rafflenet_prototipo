@@ -4,23 +4,24 @@ class Sorteador {
 
     private String logoNegocio
     private String nombreRepresentante
-    private Map<String,Sorteo> misSorteos
+    private Set<Sorteo> misSorteos
 
     static constraints = {
         nombreRepresentante blank: false, nullable: false
         misSorteos nullable: false
     }
 
-    Author() {
-        //Execute post creation code
-        logoNegocio = ""
-        nombreRepresentante = ""
-        misSorteos = []
-    }
+    // Sorteador(String logoNegocio, String nombreRepresentante) {
+    //     //Execute post creation code
+    //     logoNegocio = logoNegocio == null ? "" : logoNegocio
+    //     nombreRepresentante = nombreRepresentante == null ? "" : nombreRepresentante
+    //     misSorteos=[:]
+    // }
 
-    // Author(String _name) {
-    //     name = _name
-
+    // Sorteador(String _logoNegocio, String _nombreRepresentante) {
+    //     this.logoNegocio = _logoNegocio ? "" : _logoNegocio
+    //     this.nombreRepresentante = _nombreRepresentante ? "" : _nombreRepresentante
+    //     this.misSorteos=[:]
     //     //Execute post creation code
     // }
 
@@ -33,18 +34,17 @@ class Sorteador {
             duracionDias: durDias,
             tipo: tipo,
             tematicas: tematicas,
-            cuponesBeneficio: '',
+            cuponesBeneficio: "",
             participantes: [],
-            ganadorSorteo: null
+            ganadorSorteo: ""
         )
-
-        misSorteos.add(nuevoSorteo)
+        //misSorteos.add(nuevoSorteo)
 
         return nuevoSorteo
     }
     
-    def decirNombre(){
-        return nombreRepresentante
+    def mostrarDatosSorteador(){
+        println this.dump()
     }
 
     def finalizarSorteoManual() {}

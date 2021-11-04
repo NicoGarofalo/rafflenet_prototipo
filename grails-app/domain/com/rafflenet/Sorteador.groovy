@@ -4,7 +4,11 @@ class Sorteador {
 
     private String logoNegocio
     private String nombreRepresentante
-    private Map<String,Sorteo> misSorteos
+    private Set<Sorteo> misSorteos = []
+
+    // static hasMany = [
+    //     misSorteos: Sorteo,
+    // ]
 
     static constraints = {
         nombreRepresentante blank: false, nullable: false
@@ -38,7 +42,7 @@ class Sorteador {
             participantes: [],
             ganadorSorteo: ""
         )
-        //misSorteos.add(nuevoSorteo)
+        misSorteos << nuevoSorteo
 
         return nuevoSorteo
     }

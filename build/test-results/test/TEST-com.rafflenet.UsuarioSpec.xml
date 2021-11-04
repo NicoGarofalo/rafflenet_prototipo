@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.rafflenet.UsuarioSpec" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-11-03T21:46:58" hostname="192.168.1.5" time="0.0">
+<testsuite name="com.rafflenet.UsuarioSpec" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-11-04T04:00:36" hostname="nicolas-x540ua" time="0.0">
   <properties/>
   <testcase name="test something" classname="com.rafflenet.UsuarioSpec" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
