@@ -11,13 +11,10 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
     def cleanup() {
     }
 
-    void "test something"() {
-        expect:"fix me"
-            true == true
-    }
-
     void "Test sorteo creado es el esperado"() {
-        Sorteador sorteador = new Sorteador(logoNegocio:"",nombreRepresentante:"Nicolas",misSorteos: [])
+        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+
+        sorteador.mostrarDatosSorteador()
 
         String descripPremio = "Premio1"
         String imgPremio = "ImgPremio"
@@ -31,13 +28,19 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             duracionDias: durDias,
             tipo: tipo,
             tematicas: tematicas,
-            cuponesBeneficio: '',
+            cuponesBeneficio: "",
             participantes: [],
-            ganadorSorteo: null
+            ganadorSorteo: ""
         )
+
         Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio,imgPremio, durDias, tipo, tematicas)
-        
+
+
         expect: "Sorteo creado es el esperado"
-            sorteoCreado == sorteoEsperado
+            sorteoCreado.descripcionPremio.equals(sorteoEsperado.descripcionPremio)
+            sorteoCreado.imagenPremio.equals(sorteoEsperado.imagenPremio)
+            sorteoCreado.duracionDias.equals(sorteoEsperado.duracionDias)
+            sorteoCreado.tipo.equals(sorteoEsperado.tipo)
+            sorteoCreado.tematicas.equals(sorteoEsperado.tematicas)
     }
 }
