@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.rafflenet.ParticipanteSpec" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-11-04T04:00:35" hostname="nicolas-x540ua" time="0.0">
-  <properties/>
-  <testcase name="test something" classname="com.rafflenet.ParticipanteSpec" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
