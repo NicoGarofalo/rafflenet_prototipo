@@ -34,3 +34,10 @@ bin/default/build/resources/main/application.yml
 bin/default/build/resources/main/META-INF/grails.build.info
 bin/default/grails-app/domain/com/rafflenet/Sorteador.groovy
 bin/default/src/test/groovy/com/rafflenet/SorteadorSpec.groovy
+.gradle/7.2/dependencies-accessors/dependencies-accessors.lock
+.gradle/7.2/executionHistory/executionHistory.bin
+.gradle/7.2/executionHistory/executionHistory.lock
+.gradle/7.2/fileHashes/fileHashes.bin
+.gradle/7.2/fileHashes/fileHashes.lock
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/checksums/checksums.lock
