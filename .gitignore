@@ -8,7 +8,29 @@ npm-debug.*
 *.mobileprovision
 .orig.
 web-build/
+bin/default/*/
+.gradle
+.asscache
+build
+out
+logs
+classes
 
 # macOS
 .DS_Store
 bash.exe.stackdump
+bin/default/.gradle/7.2/executionHistory/executionHistory.bin
+bin/default/.gradle/7.2/executionHistory/executionHistory.lock
+bin/default/.gradle/7.2/fileHashes/fileHashes.bin
+bin/default/.gradle/7.2/fileHashes/fileHashes.lock
+bin/default/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+bin/default/.gradle/buildOutputCleanup/outputFiles.bin
+bin/default/.gradle/checksums/checksums.lock
+bin/default/.gradle/checksums/sha1-checksums.bin
+bin/default/build/.assetcache
+bin/default/build/.dependencies
+bin/default/build/.grailspid
+bin/default/build/resources/main/application.yml
+bin/default/build/resources/main/META-INF/grails.build.info
+bin/default/grails-app/domain/com/rafflenet/Sorteador.groovy
+bin/default/src/test/groovy/com/rafflenet/SorteadorSpec.groovy
