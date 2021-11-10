@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.rafflenet.SorteadorSpec" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-11-04T03:17:43" hostname="nicolas-x540ua" time="0.469">
-  <properties/>
-  <testcase name="Test sorteo creado es el esperado" classname="com.rafflenet.SorteadorSpec" time="0.469"/>
-  <system-out><![CDATA[<com.rafflenet.Sorteador@40b678b3 logoNegocio=null nombreRepresentante=Nicolas misSorteos=[:] id=null version=null org_grails_datastore_mapping_dirty_checking_DirtyCheckable__$changedProperties=null org_grails_datastore_gorm_GormValidateable__errors=grails.validation.ValidationErrors: 0 errors org_grails_datastore_gorm_GormValidateable__skipValidate=false>
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

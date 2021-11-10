@@ -8,7 +8,7 @@ class Sorteo {
     private int tipo
     private String tematicas
     private String cuponesBeneficio
-    private List<Participante> participantes
+    private Set<Participante> participantes = []
     private Participante ganadorSorteo
     public  DetalleSorteo detalle
 
@@ -22,7 +22,13 @@ class Sorteo {
 
     def generarGanador() {}
 
-    def agregarParticipante() {}
+    def agregarParticipante(Participante participante) {
+        participantes << participante
+    }
+
+    def obtenerCantidadParticipante() {
+        return participantes.size()
+    }
 
     def crearCuponBeneficio() {}
 

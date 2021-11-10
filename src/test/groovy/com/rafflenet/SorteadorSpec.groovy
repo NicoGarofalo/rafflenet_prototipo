@@ -24,7 +24,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
 //     correspondiente al día actual y lo agrega a la lista de sorteos del sorteador
 
 
-    void "Test 1 - Creación de sorteo no exprés"() {
+    void "Test Sorteador - Creación de sorteo no exprés"() {
         Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
 
         sorteador.mostrarDatosSorteador()

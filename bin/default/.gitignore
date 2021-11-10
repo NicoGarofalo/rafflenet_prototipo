@@ -1,14 +1,12 @@
-node_modules/*/
-.expo/*
-npm-debug.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-.orig.
-web-build/
-
-# macOS
+Thumbs.db
 .DS_Store
-bash.exe.stackdump
+.gradle
+build/
+out/
+.idea
+*.iml
+*.ipr
+*.iws
+.project
+.settings
+.classpath

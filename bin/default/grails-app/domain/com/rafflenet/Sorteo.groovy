@@ -10,12 +10,14 @@ class Sorteo {
     private String cuponesBeneficio
     private List<Participante> participantes
     private Participante ganadorSorteo
+    public  DetalleSorteo detalle
 
     static constraints = {
         descripcionPremio blank: false, nullable: false
         duracionDias blank: false, nullable: false
         tipo blank: false, nullable: false
         tematicas blank: false, nullable: false
+        detalle nullable: false
     }
 
     def generarGanador() {}

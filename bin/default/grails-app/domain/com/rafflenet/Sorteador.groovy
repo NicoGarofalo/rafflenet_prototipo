@@ -4,7 +4,11 @@ class Sorteador {
 
     private String logoNegocio
     private String nombreRepresentante
-    private Set<Sorteo> misSorteos
+    public Set<Sorteo> misSorteos = []
+
+    // static hasMany = [
+    //     misSorteos: Sorteo,
+    // ]
 
     static constraints = {
         nombreRepresentante blank: false, nullable: false
@@ -26,7 +30,13 @@ class Sorteador {
     // }
 
     def crearSorteo( String descripPremio, String imgPremio, int durDias, 
-    int tipo, String tematicas) {
+    int tipo, String tematicas,int limiteParticipante, String localidad, String descripSorteo) {
+
+        DetalleSorteo nuevoDetalle = new DetalleSorteo(
+            limiteParticipante: limiteParticipante,
+            localidad: localidad,
+            descripSorteo: descripSorteo
+        )
 
         Sorteo nuevoSorteo = new Sorteo(
             descripcionPremio: descripPremio,
@@ -36,15 +46,20 @@ class Sorteador {
             tematicas: tematicas,
             cuponesBeneficio: "",
             participantes: [],
-            ganadorSorteo: ""
+            ganadorSorteo: "",
+            detalle: nuevoDetalle
         )
-        //misSorteos.add(nuevoSorteo)
+        misSorteos << nuevoSorteo
 
         return nuevoSorteo
     }
     
-    def mostrarDatosSorteador(){
+    def mostrarDatosSorteador() {
         println this.dump()
+    }
+
+    def cantidadSorteos() {
+        return misSorteos.size()
     }
 
     def finalizarSorteoManual() {}
