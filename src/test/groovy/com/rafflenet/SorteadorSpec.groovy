@@ -35,10 +35,14 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             String imgPremio = "ImgPremioTest1"
             int durDias = 10 
             int tipo = 0
-            String tematicas = "TematicaTest1"
             int limiteParticipante = 100
             String localidad = "LocalidadTest1"
             String descripSorteo = "Sorteo interesante Test1"
+
+            Tematica tematica1 = new Tematica(
+                nombre: "TematicaTest1"
+            )
+            Set<Tematica> tematicas = [tematica1]
         
         when:
             Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, durDias, tipo, tematicas,
@@ -49,11 +53,9 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             imgPremio.equals(sorteoCreado.imagenPremio)
             durDias.equals(sorteoCreado.duracionDias)
             tipo.equals(sorteoCreado.tipo)
-            tematicas.equals(sorteoCreado.tematicas)
             limiteParticipante.equals(sorteoCreado.detalle.limiteParticipante)
             localidad.equals(sorteoCreado.detalle.localidad)
             descripSorteo.equals(sorteoCreado.detalle.descripSorteo)
-
             dateNow.year.equals(sorteoCreado.detalle.fechaCreacion.year)
             dateNow.month.equals(sorteoCreado.detalle.fechaCreacion.month)
             dateNow.day.equals(sorteoCreado.detalle.fechaCreacion.day)
@@ -62,15 +64,56 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         
     }
 
-    // void "Test 2 Sorteador finaliza sorteo manual correctamente"() {
-    //     Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
-        
-    //     String descripPremio = "Premio1"
-    //     String imgPremio = "ImgPremio"
-    //     int durDias = 10 
-    //     int tipo = 0
-    //     String tematicas = "Tematica1"
+// Dado que el sorteador ingresa un código de cupón único en estado Vigente
+// Y que el cupón pertenece a un sorteo del sorteador
+// Y que el sorteo en cuestión ya finalizó
+// Y que el sorteador visualiza la descripción del cupón y la fecha de vencimiento
+// Cuando el sorteador canjea el código de cupón de beneficio en la aplicación
+// Entonces la aplicación cambia el estado del cupón de Vigente a Canjeado y le informa al sorteador que el cupón fue canjeado.
 
-    //     sorteador.crearSorteo(descripPremio,imgPremio, durDias, tipo, tematicas)
-    // }
+    void "Test Sorteador - CA1 - Utilización de cupón de beneficio por participación"() {
+        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+        
+        String descripPremio = "Premio1"
+        String imgPremio = "ImgPremio1"
+        int durDias = 10 
+        int tipo = 0
+        int limiteParticipante = 150
+        String localidad = "LocalidadTest1"
+        String descripSorteo = "Sorteo interesante Test1"
+
+
+        Tematica tematica1 = new Tematica(
+            nombre: "TematicaTest1"
+        )
+        Set<Tematica> tematicas = [tematica1]
+
+        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, durDias, 
+            tipo, tematicas, limiteParticipante, localidad, descripSorteo)
+        
+        CuponBeneficio cuponTest1 = new CuponBeneficio(
+            codigoCupon: "4ABX23S",
+            descripcionCupon: "Descripcion test del cupon",
+            fechaVencimiento: new Date(),
+            estado: 1 // Vigente
+        )
+
+        CuponBeneficio cuponTest2 = new CuponBeneficio(
+            codigoCupon: "4AK3L3O",
+            descripcionCupon: "Descripcion test 2 del cupon",
+            fechaVencimiento: new Date(),
+            estado: 1 // Vigente
+        )
+        
+        Set<CuponBeneficio> cupones = [cuponTest1,cuponTest2]
+        sorteoCreado.setCuponesBeneficio(cupones) //Metodo solo para tests
+
+        given:
+            sorteoCreado.generarGanador()//Esto finaliza sorteo
+        when:
+            sorteador.canjearCupon(sorteoCreado,"4ABX23S")
+        then:
+            Set<CuponBeneficio> cuponesSorteo = sorteoCreado.obtenerCuponesBeneficio()
+            cuponesSorteo[0].obtenerEstado().equals(2)
+    }
 }
