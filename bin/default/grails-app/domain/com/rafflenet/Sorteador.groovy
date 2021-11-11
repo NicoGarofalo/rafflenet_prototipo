@@ -15,22 +15,8 @@ class Sorteador {
         misSorteos nullable: false
     }
 
-    // Sorteador(String logoNegocio, String nombreRepresentante) {
-    //     //Execute post creation code
-    //     logoNegocio = logoNegocio == null ? "" : logoNegocio
-    //     nombreRepresentante = nombreRepresentante == null ? "" : nombreRepresentante
-    //     misSorteos=[:]
-    // }
-
-    // Sorteador(String _logoNegocio, String _nombreRepresentante) {
-    //     this.logoNegocio = _logoNegocio ? "" : _logoNegocio
-    //     this.nombreRepresentante = _nombreRepresentante ? "" : _nombreRepresentante
-    //     this.misSorteos=[:]
-    //     //Execute post creation code
-    // }
-
     def crearSorteo( String descripPremio, String imgPremio, int durDias, 
-    int tipo, String tematicas,int limiteParticipante, String localidad, String descripSorteo) {
+    int tipo, Set<Tematica> tematicas,int limiteParticipante, String localidad, String descripSorteo) {
 
         DetalleSorteo nuevoDetalle = new DetalleSorteo(
             limiteParticipante: limiteParticipante,
@@ -62,11 +48,19 @@ class Sorteador {
         return misSorteos.size()
     }
 
-    def finalizarSorteoManual() {}
+    def finalizarSorteoManual() {
+
+    }
 
     def obtenerGanador() {}
 
-    def canjearCupon() {}
+    def canjearCupon(Sorteo sorteo, String codigoCupon) {
+        CuponBeneficio cupon = sorteo.obtenerCupon(codigoCupon)
+        if(!cupon)  return false
+        
+        //aca iria un verificarVencimiento()
+        return cupon.canjear()
+    }
 
     def obtenerSorteo() {}
 

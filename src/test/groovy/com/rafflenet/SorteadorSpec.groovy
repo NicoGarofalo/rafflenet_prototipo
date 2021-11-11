@@ -82,6 +82,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         String localidad = "LocalidadTest1"
         String descripSorteo = "Sorteo interesante Test1"
 
+        
 
         Tematica tematica1 = new Tematica(
             nombre: "TematicaTest1"
@@ -90,11 +91,11 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
 
         Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, durDias, 
             tipo, tematicas, limiteParticipante, localidad, descripSorteo)
-        
+
         CuponBeneficio cuponTest1 = new CuponBeneficio(
             codigoCupon: "4ABX23S",
             descripcionCupon: "Descripcion test del cupon",
-            fechaVencimiento: new Date(),
+            fechaVencimiento: new Date().toInstant().plus(1),
             estado: 1 // Vigente
         )
 
@@ -116,4 +117,162 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             Set<CuponBeneficio> cuponesSorteo = sorteoCreado.obtenerCuponesBeneficio()
             cuponesSorteo[0].obtenerEstado().equals(2)
     }
+
+
+// Dado que el sorteador ingresa un código de cupón único en estado Vencido
+// Y que el cupón pertenece a un sorteo del sorteador
+// Y que el sorteador visualiza la descripción del cupón y la fecha de vencimiento
+// Cuando el sorteador ingresa el código de cupón de beneficio en la aplicación para canjearlo
+// Entonces la aplicación le informa al sorteador que el estado del cupón es Vencido y que ya no puede ser canjeado
+
+    void "Test Sorteador - CA2 - Utilización de cupón de beneficio por participación"() {
+        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+        
+        String descripPremio = "Premio1"
+        String imgPremio = "ImgPremio1"
+        int durDias = 10 
+        int tipo = 0
+        int limiteParticipante = 150
+        String localidad = "LocalidadTest1"
+        String descripSorteo = "Sorteo interesante Test1"
+
+
+        Tematica tematica1 = new Tematica(
+            nombre: "TematicaTest1"
+        )
+        Set<Tematica> tematicas = [tematica1]
+
+        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, durDias, 
+            tipo, tematicas, limiteParticipante, localidad, descripSorteo)
+        
+        CuponBeneficio cuponTest1 = new CuponBeneficio(
+            codigoCupon: "4ABX23S",
+            descripcionCupon: "Descripcion test del cupon",
+            fechaVencimiento: new Date().toInstant().minus(1),
+            estado: 1 // Vigente
+        )
+
+        CuponBeneficio cuponTest2 = new CuponBeneficio(
+            codigoCupon: "4AK3L3O",
+            descripcionCupon: "Descripcion test 2 del cupon",
+            fechaVencimiento: new Date(),
+            estado: 1 // Vigente
+        )
+        
+        Set<CuponBeneficio> cupones = [cuponTest1,cuponTest2]
+        sorteoCreado.setCuponesBeneficio(cupones) //Metodo solo para tests
+
+        given:
+            sorteoCreado.generarGanador()//Esto finaliza sorteo
+        when:
+            String cuponDisponible = sorteador.canjearCupon(sorteoCreado,"4ABX23S")
+        then:
+            cuponDisponible.equals('Cupon vencido')
+            cupones[0].obtenerEstado().equals(3)
+    }
+
+
+// Dado que el sorteador ingresa un código de cupón único en estado Canjeado
+// Y que el cupón pertenece a un sorteo del sorteador
+// Y que el sorteador visualiza la descripción del cupón y la fecha de vencimiento
+// Cuando el sorteador ingresa el código de cupón de beneficio en la aplicación para canjearlo
+// Entonces la aplicación le informa al sorteador que el estado del cupón es Canjeado y que ya no puede ser canjeado
+
+    void "Test Sorteador - CA4 - Utilización de cupón de beneficio por participación"() {
+        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+        
+        String descripPremio = "Premio1"
+        String imgPremio = "ImgPremio1"
+        int durDias = 10 
+        int tipo = 0
+        int limiteParticipante = 150
+        String localidad = "LocalidadTest1"
+        String descripSorteo = "Sorteo interesante Test1"
+
+
+        Tematica tematica1 = new Tematica(
+            nombre: "TematicaTest1"
+        )
+        Set<Tematica> tematicas = [tematica1]
+
+        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, durDias, 
+            tipo, tematicas, limiteParticipante, localidad, descripSorteo)
+        
+        CuponBeneficio cuponTest1 = new CuponBeneficio(
+            codigoCupon: "4ABX23S",
+            descripcionCupon: "Descripcion test del cupon",
+            fechaVencimiento: new Date().toInstant().plus(1),
+            estado: 2 // Canjeado
+        )
+
+        CuponBeneficio cuponTest2 = new CuponBeneficio(
+            codigoCupon: "4AK3L3O",
+            descripcionCupon: "Descripcion test 2 del cupon",
+            fechaVencimiento: new Date(),
+            estado: 1 // Vigente
+        )
+        
+        Set<CuponBeneficio> cupones = [cuponTest1,cuponTest2]
+        sorteoCreado.setCuponesBeneficio(cupones) //Metodo solo para tests
+
+        given:
+            sorteoCreado.generarGanador()//Esto finaliza sorteo
+        when:
+            sorteador.canjearCupon(sorteoCreado,"4ABX23S")
+        then:
+            Set<CuponBeneficio> cuponesSorteo = sorteoCreado.obtenerCuponesBeneficio()
+            cuponesSorteo[0].obtenerEstado().equals(2)
+    }
+
+
+// Dado que el sorteador ingresa un código de cupón único que no pertenece a ningún sorteo del sorteador
+// Cuando el sorteador ingresa el código de cupón de beneficio en la aplicación para canjearlo
+// Entonces la aplicación le notificará al sorteador que este cupón no pertenece a ninguno de sus sorteos
+
+
+void "Test Sorteador - CA5 - Utilización de cupón de beneficio por participación"() {
+        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+        
+        String descripPremio = "Premio1"
+        String imgPremio = "ImgPremio1"
+        int durDias = 10 
+        int tipo = 0
+        int limiteParticipante = 150
+        String localidad = "LocalidadTest1"
+        String descripSorteo = "Sorteo interesante Test1"
+
+
+        Tematica tematica1 = new Tematica(
+            nombre: "TematicaTest1"
+        )
+        Set<Tematica> tematicas = [tematica1]
+
+        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, durDias, 
+            tipo, tematicas, limiteParticipante, localidad, descripSorteo)
+        
+        CuponBeneficio cuponTest1 = new CuponBeneficio(
+            codigoCupon: "4ABX23S",
+            descripcionCupon: "Descripcion test del cupon",
+            fechaVencimiento: new Date().toInstant().plus(1),
+            estado: 1 // Vigente
+        )
+
+        CuponBeneficio cuponTest2 = new CuponBeneficio(
+            codigoCupon: "4AK3L3O",
+            descripcionCupon: "Descripcion test 2 del cupon",
+            fechaVencimiento: new Date(),
+            estado: 1 // Vigente
+        )
+        
+        Set<CuponBeneficio> cupones = [cuponTest1,cuponTest2]
+        sorteoCreado.setCuponesBeneficio(cupones) //Metodo solo para tests
+
+        given:
+            sorteoCreado.generarGanador()//Esto finaliza sorteo
+        when:
+            String cuponDisponible = sorteador.canjearCupon(sorteoCreado,"8YND10Q")
+        then:
+            cuponDisponible.equals('Cupon no encontrado')
+    }
+
 }

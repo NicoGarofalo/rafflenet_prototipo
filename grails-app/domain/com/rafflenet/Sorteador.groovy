@@ -56,9 +56,11 @@ class Sorteador {
 
     def canjearCupon(Sorteo sorteo, String codigoCupon) {
         CuponBeneficio cupon = sorteo.obtenerCupon(codigoCupon)
-        if(!cupon)  return false
+        if(!cupon)  return 'Cupon no encontrado'
         
         //aca iria un verificarVencimiento()
+        if (cupon.verificarVencimiento()) return 'Cupon vencido'
+
         return cupon.canjear()
     }
 

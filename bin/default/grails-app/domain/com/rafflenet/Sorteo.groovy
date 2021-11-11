@@ -1,4 +1,5 @@
 package com.rafflenet
+import java.lang.Math
 
 class Sorteo {
 
@@ -6,10 +7,11 @@ class Sorteo {
     private String imagenPremio
     private int duracionDias
     private int tipo
-    private String tematicas
-    private String cuponesBeneficio
-    private List<Participante> participantes
+    private Set<Tematica> tematicas = []
+    private Set<CuponBeneficio> cuponesBeneficio = []
+    private Set<Participante> participantes = []
     private Participante ganadorSorteo
+    private int estado = 0
     public  DetalleSorteo detalle
 
     static constraints = {
@@ -20,9 +22,32 @@ class Sorteo {
         detalle nullable: false
     }
 
-    def generarGanador() {}
+    def generarGanador() {
+        int rango = this.obtenerCantidadParticipante()
+        int posicionGanador = (int) Math.random() * rango
 
-    def agregarParticipante() {}
+        this.ganadorSorteo = participantes[posicionGanador]
+        this.estado = 1 
+        return participantes[posicionGanador]
+    }
+
+
+    //Para tests
+    def setCuponesBeneficio(Set<CuponBeneficio> cupones) {
+        this.cuponesBeneficio = cupones
+    }
+    //Para tests
+    def obtenerCuponesBeneficio(Set<CuponBeneficio> cupones) {
+        return this.cuponesBeneficio
+    }
+
+    def agregarParticipante(Participante participante) {
+        participantes << participante
+    }
+
+    def obtenerCantidadParticipante() {
+        return participantes.size()
+    }
 
     def crearCuponBeneficio() {}
 
@@ -30,6 +55,8 @@ class Sorteo {
 
     def eliminarTematica() {}
 
-    def canjearCupon() {}
+    def obtenerCupon(String codigoCupon) {
+        return cuponesBeneficio.find{cupon -> cupon.codigoCupon == codigoCupon}
+    }
 
 }

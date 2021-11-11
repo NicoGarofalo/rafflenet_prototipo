@@ -15,22 +15,9 @@ class CuponBeneficio {
         return this.estado
     }
 
-    def verificarVencimiento() {
-        Date fechaHoy = new Date()
-        if(this.fechaVencimiento < fechaHoy) {
-            caducar()
-            return true
-        }
-        return false
-    }
-
-    def caducar() {
-        this.estado = 3
-    }
-
     def canjear() {
-        if(this.estado != 1) return false
-        this.estado = 2
+        if(estado != 1) return false
+        estado = 2
         return true
     }
 }
