@@ -1,29 +1,33 @@
 package com.rafflenet
 import java.lang.Math
+import java.time.*
 
 class Sorteo {
 
-    private String descripcionPremio
-    private String imagenPremio
-    private int duracionDias
-    private int tipo
-    private Set<Tematica> tematicas = []
-    private Set<CuponBeneficio> cuponesBeneficio = []
-    private Set<Participante> participantes = []
-    private Participante ganadorSorteo
-    private int estado = 0
-    public  DetalleSorteo detalle
+    String descripcionPremio
+    String imagenPremio
+    LocalDate fechaVencimiento
+    int tipo
+    Set<Tematica> tematicas = []
+    Set<CuponBeneficio> cuponesBeneficio = []
+    Set<Participante> participantes = []
+    Participante ganadorSorteo
+    int estado = 0
+    DetalleSorteo detalle
 
     static constraints = {
         descripcionPremio blank: false, nullable: false
-        duracionDias blank: false, nullable: false
         tipo blank: false, nullable: false
         tematicas blank: false, nullable: false
         detalle nullable: false
     }
 
     def generarGanador() {
-        int rango = this.obtenerCantidadParticipante()
+        int cantidadParticipantes = this.obtenerCantidadParticipante()
+        if(cantidadParticipantes == 0){
+            return null
+        }
+        int rango = cantidadParticipantes - 1
         int posicionGanador = (int) Math.random() * rango
 
         this.ganadorSorteo = participantes[posicionGanador]
@@ -31,6 +35,9 @@ class Sorteo {
         return participantes[posicionGanador]
     }
 
+    def validarFecha(LocalDate fecha) {
+        return fechaVencimiento <= fecha
+    }
 
     //Para tests
     def setCuponesBeneficio(Set<CuponBeneficio> cupones) {

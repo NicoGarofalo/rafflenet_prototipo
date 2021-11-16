@@ -1,10 +1,11 @@
 package com.rafflenet
+import java.time.*
 
 class Sorteador {
 
-    private String logoNegocio
-    private String nombreRepresentante
-    public Set<Sorteo> misSorteos = []
+    String logoNegocio
+    String nombreRepresentante
+    Set<Sorteo> misSorteos = []
 
     // static hasMany = [
     //     misSorteos: Sorteo,
@@ -15,7 +16,7 @@ class Sorteador {
         misSorteos nullable: false
     }
 
-    def crearSorteo( String descripPremio, String imgPremio, int durDias, 
+    def crearSorteo( String descripPremio, String imgPremio, LocalDate fechaVencimiento, 
     int tipo, Set<Tematica> tematicas,int limiteParticipante, String localidad, String descripSorteo) {
 
         DetalleSorteo nuevoDetalle = new DetalleSorteo(
@@ -27,12 +28,12 @@ class Sorteador {
         Sorteo nuevoSorteo = new Sorteo(
             descripcionPremio: descripPremio,
             imagenPremio: imgPremio,
-            duracionDias: durDias,
             tipo: tipo,
             tematicas: tematicas,
             cuponesBeneficio: "",
             participantes: [],
             ganadorSorteo: "",
+            fechaVencimiento: fechaVencimiento,
             detalle: nuevoDetalle
         )
         misSorteos << nuevoSorteo
@@ -59,7 +60,12 @@ class Sorteador {
         if(!cupon)  return 'Cupon no encontrado'
         
         //aca iria un verificarVencimiento()
-        if (cupon.verificarVencimiento()) return 'Cupon vencido'
+        if (cupon.verificarVencimiento()) return 'Cupon vencido' 
+        if (cupon.canjear()) {
+            return 'Cupon canjeado exitosamente'
+        } else {
+            return 'Cupon ya canjeado'
+        }
 
         return cupon.canjear()
     }

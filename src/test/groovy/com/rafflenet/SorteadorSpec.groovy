@@ -2,6 +2,8 @@ package com.rafflenet
 
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
+import java.time.*
+
 
 class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
 
@@ -33,7 +35,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         given: 
             String descripPremio = "PremioTest1"
             String imgPremio = "ImgPremioTest1"
-            int durDias = 10 
+            LocalDate fechaVencimiento = LocalDate.now().plusDays(10)
             int tipo = 0
             int limiteParticipante = 100
             String localidad = "LocalidadTest1"
@@ -45,13 +47,13 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             Set<Tematica> tematicas = [tematica1]
         
         when:
-            Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, durDias, tipo, tematicas,
+            Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, tematicas,
              limiteParticipante, localidad, descripSorteo)
 
         then:
             descripPremio.equals(sorteoCreado.descripcionPremio)
             imgPremio.equals(sorteoCreado.imagenPremio)
-            durDias.equals(sorteoCreado.duracionDias)
+            fechaVencimiento.equals(sorteoCreado.fechaVencimiento)
             tipo.equals(sorteoCreado.tipo)
             limiteParticipante.equals(sorteoCreado.detalle.limiteParticipante)
             localidad.equals(sorteoCreado.detalle.localidad)
@@ -76,7 +78,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         
         String descripPremio = "Premio1"
         String imgPremio = "ImgPremio1"
-        int durDias = 10 
+        LocalDate fechaVencimiento = LocalDate.now().plusDays(10)
         int tipo = 0
         int limiteParticipante = 150
         String localidad = "LocalidadTest1"
@@ -89,7 +91,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         )
         Set<Tematica> tematicas = [tematica1]
 
-        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, durDias, 
+        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, 
             tipo, tematicas, limiteParticipante, localidad, descripSorteo)
 
         CuponBeneficio cuponTest1 = new CuponBeneficio(
@@ -112,8 +114,9 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         given:
             sorteoCreado.generarGanador()//Esto finaliza sorteo
         when:
-            sorteador.canjearCupon(sorteoCreado,"4ABX23S")
+            String cuponDisponible = sorteador.canjearCupon(sorteoCreado,"4ABX23S")
         then:
+            cuponDisponible.equals("Cupon canjeado exitosamente")
             Set<CuponBeneficio> cuponesSorteo = sorteoCreado.obtenerCuponesBeneficio()
             cuponesSorteo[0].obtenerEstado().equals(2)
     }
@@ -130,7 +133,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         
         String descripPremio = "Premio1"
         String imgPremio = "ImgPremio1"
-        int durDias = 10 
+        LocalDate fechaVencimiento = LocalDate.now().plusDays(10)
         int tipo = 0
         int limiteParticipante = 150
         String localidad = "LocalidadTest1"
@@ -142,7 +145,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         )
         Set<Tematica> tematicas = [tematica1]
 
-        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, durDias, 
+        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, 
             tipo, tematicas, limiteParticipante, localidad, descripSorteo)
         
         CuponBeneficio cuponTest1 = new CuponBeneficio(
@@ -183,7 +186,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         
         String descripPremio = "Premio1"
         String imgPremio = "ImgPremio1"
-        int durDias = 10 
+        LocalDate fechaVencimiento = LocalDate.now().plusDays(10)
         int tipo = 0
         int limiteParticipante = 150
         String localidad = "LocalidadTest1"
@@ -195,7 +198,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         )
         Set<Tematica> tematicas = [tematica1]
 
-        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, durDias, 
+        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, 
             tipo, tematicas, limiteParticipante, localidad, descripSorteo)
         
         CuponBeneficio cuponTest1 = new CuponBeneficio(
@@ -218,8 +221,9 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         given:
             sorteoCreado.generarGanador()//Esto finaliza sorteo
         when:
-            sorteador.canjearCupon(sorteoCreado,"4ABX23S")
+            String cuponDisponible = sorteador.canjearCupon(sorteoCreado,"4ABX23S")
         then:
+            cuponDisponible.equals("Cupon ya canjeado")
             Set<CuponBeneficio> cuponesSorteo = sorteoCreado.obtenerCuponesBeneficio()
             cuponesSorteo[0].obtenerEstado().equals(2)
     }
@@ -230,12 +234,12 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
 // Entonces la aplicación le notificará al sorteador que este cupón no pertenece a ninguno de sus sorteos
 
 
-void "Test Sorteador - CA5 - Utilización de cupón de beneficio por participación"() {
+    void "Test Sorteador - CA5 - Utilización de cupón de beneficio por participación"() {
         Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
         
         String descripPremio = "Premio1"
         String imgPremio = "ImgPremio1"
-        int durDias = 10 
+        LocalDate fechaVencimiento = LocalDate.now().plusDays(10)
         int tipo = 0
         int limiteParticipante = 150
         String localidad = "LocalidadTest1"
@@ -247,7 +251,7 @@ void "Test Sorteador - CA5 - Utilización de cupón de beneficio por participaci
         )
         Set<Tematica> tematicas = [tematica1]
 
-        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, durDias, 
+        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento,
             tipo, tematicas, limiteParticipante, localidad, descripSorteo)
         
         CuponBeneficio cuponTest1 = new CuponBeneficio(
@@ -274,5 +278,48 @@ void "Test Sorteador - CA5 - Utilización de cupón de beneficio por participaci
         then:
             cuponDisponible.equals('Cupon no encontrado')
     }
+    // Como sorteador
+    // Quiero ser notificado del ganador que se sorteo automáticamente en el día y hora programado
+    // Para saber quién es el ganador y poder contactarme con el mismo
 
+    // Dado que el sorteador programó un sorteo automático cuando creó el sorteo
+    // Cuando el sorteo alcanza la fecha de finalización
+    // Entonces la aplicación sortea automáticamente y le notifica al sorteador cuál es
+    // el ganador obtenido, y finaliza el sorteo
+
+
+    void "Test Sorteador - Sorteo automático de ganador" () {
+        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+
+        Tematica tematica1 = new Tematica(
+            nombre: "TematicaTest1"
+        )
+        Set<Tematica> tematicas = [tematica1]
+
+        Participante nuevoParticipante = new Participante(localidad:"localidad1", coidigoPostal:1234)
+
+        given:
+            Sorteo sorteoCreado = sorteador.crearSorteo(
+                "DescripcionPremio1", 
+                "ImgPremio1",
+                LocalDate.now().plusDays(10), 
+                0, 
+                tematicas, 
+                150, 
+                "LocalidadTest1", 
+                "Sorteo interesante Test1"
+            )
+
+            sorteoCreado.agregarParticipante(nuevoParticipante)
+        when:
+            LocalDate fechaSimuladaVencimiento = LocalDate.now().plusDays(10)
+            def vencioSorteo = sorteador.misSorteos[0].validarFecha(fechaSimuladaVencimiento)
+            Participante ganador = sorteador.misSorteos[0].generarGanador()
+        then:
+            vencioSorteo == true //El sorteo venció (en base a fechas)
+            ganador != null //Obtengo ganador valido
+            sorteador.misSorteos[0].estado.equals(1)//Finalizado
+    }
+
+    
 }

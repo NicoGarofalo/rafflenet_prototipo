@@ -2,13 +2,13 @@ package com.rafflenet
 
 class Usuario {
 
-    private String nombre
-    private String constrasenia
-    private String email
-    private String telefono
-    private int rol
-    private Participante participante
-    private Sorteador sorteador
+    String nombre
+    String constrasenia
+    String email
+    String telefono
+    int rol
+    Participante participante
+    Sorteador sorteador
 
     static constraints = {
         nombre blank: false, nullable: false

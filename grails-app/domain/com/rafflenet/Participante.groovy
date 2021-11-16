@@ -2,9 +2,9 @@ package com.rafflenet
 
 class Participante {
 
-    private String localidad
-    private int codigoPostal
-    private Set<Sorteo> misSorteos = []
+    String localidad
+    int codigoPostal
+    Set<Sorteo> misSorteos = []
     // private Set<CuponBeneficio> misCupones = []
     // private Set<Tematica> tematicas = []
     

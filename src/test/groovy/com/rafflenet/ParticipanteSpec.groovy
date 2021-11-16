@@ -17,6 +17,8 @@ class ParticipanteSpec extends Specification implements DomainUnitTest<Participa
 // Y que se le permita al participante participar o no
 // Cuando el participante elige participar
 // Entonces la aplicación lo agrega a la lista de participantes del sorteo
+// Y el participante agrega al sorteo a su lista de sorteos
+
 
 
     void "Test Participante - Participar en un sorteo"() {
