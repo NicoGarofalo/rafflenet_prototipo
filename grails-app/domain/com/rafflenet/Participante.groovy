@@ -6,7 +6,7 @@ class Participante {
     int codigoPostal
     Set<Sorteo> misSorteos = []
     // private Set<CuponBeneficio> misCupones = []
-    // private Set<Tematica> tematicas = []
+    Set<Tematica> tematicas = []
     
 
     static constraints = {
@@ -23,7 +23,9 @@ class Participante {
         return misSorteos.size()
     }
 
-    def elegirTematica() {}
+    def elegirTematica(Tematica tematicaElegido) {
+        tematicas << tematicaElegido
+    }
 
     def eliminarTematica() {}
 

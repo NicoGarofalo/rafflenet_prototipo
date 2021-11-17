@@ -60,12 +60,11 @@ class Sorteo {
 
     def crearCuponBeneficio() {}
 
-    def agregarTematica() {}
-
-    def eliminarTematica() {}
-
     def obtenerCupon(String codigoCupon) {
         return cuponesBeneficio.find{cupon -> cupon.codigoCupon == codigoCupon}
     }
 
+    def generarEstadisticaPonderacionPorTematica() {
+        return this.detalle.generarEstadisticaPonderacionPorTematica(this.tematicas, this.participantes)
+    }
 }

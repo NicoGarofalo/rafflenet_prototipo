@@ -13,17 +13,17 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
     def cleanup() {
     }
 
-// Incluimos US y CA Trivial con fines de práctica para Test Spock
+    // Incluimos US y CA Trivial con fines de práctica para Test Spock
 
-// US Creación de sorteo no exprés: Como sorteador quiero crear un sorteo para que los participantes puedan inscribirse al mismo
+    // US Creación de sorteo no exprés: Como sorteador quiero crear un sorteo para que los participantes puedan inscribirse al mismo
 
-// CA: Dado que el sorteador define los datos del sorteo: descripción e imagen del premio, duración del sorteo en días,
-//     temáticas, limite de participantes, localidad, descripción del sorteo
-//     Y que el tipo de sorteo seleccionado por el sorteador es no exprés
-//     Y que todos los campos son obligatorios
-//     Cuando el sorteador decide crear el sorteo
-//     Entonces la aplicación verifica que todos los campos estan completos, crea el sorteo con fecha de creación
-//     correspondiente al día actual y lo agrega a la lista de sorteos del sorteador
+    // CA: Dado que el sorteador define los datos del sorteo: descripción e imagen del premio, duración del sorteo en días,
+    //     temáticas, limite de participantes, localidad, descripción del sorteo
+    //     Y que el tipo de sorteo seleccionado por el sorteador es no exprés
+    //     Y que todos los campos son obligatorios
+    //     Cuando el sorteador decide crear el sorteo
+    //     Entonces la aplicación verifica que todos los campos estan completos, crea el sorteo con fecha de creación
+    //     correspondiente al día actual y lo agrega a la lista de sorteos del sorteador
 
 
     void "Test Sorteador - Creación de sorteo no exprés"() {
@@ -66,12 +66,12 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         
     }
 
-// Dado que el sorteador ingresa un código de cupón único en estado Vigente
-// Y que el cupón pertenece a un sorteo del sorteador
-// Y que el sorteo en cuestión ya finalizó
-// Y que el sorteador visualiza la descripción del cupón y la fecha de vencimiento
-// Cuando el sorteador canjea el código de cupón de beneficio en la aplicación
-// Entonces la aplicación cambia el estado del cupón de Vigente a Canjeado y le informa al sorteador que el cupón fue canjeado.
+    // Dado que el sorteador ingresa un código de cupón único en estado Vigente
+    // Y que el cupón pertenece a un sorteo del sorteador
+    // Y que el sorteo en cuestión ya finalizó
+    // Y que el sorteador visualiza la descripción del cupón y la fecha de vencimiento
+    // Cuando el sorteador canjea el código de cupón de beneficio en la aplicación
+    // Entonces la aplicación cambia el estado del cupón de Vigente a Canjeado y le informa al sorteador que el cupón fue canjeado.
 
     void "Test Sorteador - CA1 - Utilización de cupón de beneficio por participación"() {
         Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
@@ -122,11 +122,11 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
     }
 
 
-// Dado que el sorteador ingresa un código de cupón único en estado Vencido
-// Y que el cupón pertenece a un sorteo del sorteador
-// Y que el sorteador visualiza la descripción del cupón y la fecha de vencimiento
-// Cuando el sorteador ingresa el código de cupón de beneficio en la aplicación para canjearlo
-// Entonces la aplicación le informa al sorteador que el estado del cupón es Vencido y que ya no puede ser canjeado
+    // Dado que el sorteador ingresa un código de cupón único en estado Vencido
+    // Y que el cupón pertenece a un sorteo del sorteador
+    // Y que el sorteador visualiza la descripción del cupón y la fecha de vencimiento
+    // Cuando el sorteador ingresa el código de cupón de beneficio en la aplicación para canjearlo
+    // Entonces la aplicación le informa al sorteador que el estado del cupón es Vencido y que ya no puede ser canjeado
 
     void "Test Sorteador - CA2 - Utilización de cupón de beneficio por participación"() {
         Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
@@ -175,11 +175,11 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
     }
 
 
-// Dado que el sorteador ingresa un código de cupón único en estado Canjeado
-// Y que el cupón pertenece a un sorteo del sorteador
-// Y que el sorteador visualiza la descripción del cupón y la fecha de vencimiento
-// Cuando el sorteador ingresa el código de cupón de beneficio en la aplicación para canjearlo
-// Entonces la aplicación le informa al sorteador que el estado del cupón es Canjeado y que ya no puede ser canjeado
+    // Dado que el sorteador ingresa un código de cupón único en estado Canjeado
+    // Y que el cupón pertenece a un sorteo del sorteador
+    // Y que el sorteador visualiza la descripción del cupón y la fecha de vencimiento
+    // Cuando el sorteador ingresa el código de cupón de beneficio en la aplicación para canjearlo
+    // Entonces la aplicación le informa al sorteador que el estado del cupón es Canjeado y que ya no puede ser canjeado
 
     void "Test Sorteador - CA4 - Utilización de cupón de beneficio por participación"() {
         Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
@@ -229,9 +229,9 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
     }
 
 
-// Dado que el sorteador ingresa un código de cupón único que no pertenece a ningún sorteo del sorteador
-// Cuando el sorteador ingresa el código de cupón de beneficio en la aplicación para canjearlo
-// Entonces la aplicación le notificará al sorteador que este cupón no pertenece a ninguno de sus sorteos
+    // Dado que el sorteador ingresa un código de cupón único que no pertenece a ningún sorteo del sorteador
+    // Cuando el sorteador ingresa el código de cupón de beneficio en la aplicación para canjearlo
+    // Entonces la aplicación le notificará al sorteador que este cupón no pertenece a ninguno de sus sorteos
 
 
     void "Test Sorteador - CA5 - Utilización de cupón de beneficio por participación"() {
@@ -371,6 +371,59 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         then:
             int resultadoEsperado = 5 / 15 * 100
             resultados.equals(resultadoEsperado)
+    }
+
+    // Dado que un sorteo finalizó
+    // Y que se cuenta con los participantes de un sorteo y qué temáticas está interesado cada uno
+    // Cuando se pide generar un análisis del porcentaje de participantes por temática 
+    // Entonces la aplicación calculará el porcentaje de participantes por cada temática relacionado con el sorteo en cuestión
+    // Y el sorteador podrá visualizar estos porcentajes, 
+    // Y la suma de los mismos deberá ser 100%
+
+ void "Test Sorteador - CA3 - Visualización de sorteo finalizado" () {
+        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+
+        Tematica tematica1 = new Tematica(
+            nombre: "TematicaTest1"
+        )
+        Tematica tematica2 = new Tematica(
+            nombre: "TematicaTest2"
+        )
+        Tematica tematica3 = new Tematica(
+            nombre: "TematicaTest3"
+        )
+        Set<Tematica> tematicasSorteo = [tematica1,tematica2,tematica3]
+
+        Participante p1 = new Participante(localidad:"localidad1", coidigoPostal:1234)
+        Participante p2 = new Participante(localidad:"localidad2", coidigoPostal:2345)
+        Participante p3 = new Participante(localidad:"localidad3", coidigoPostal:2366)
+
+        p1.elegirTematica(tematica1)
+        p2.elegirTematica(tematica2)
+        p3.elegirTematica(tematica1)
+
+        given:
+            Sorteo sorteoCreado = sorteador.crearSorteo(
+                "DescripcionPremio1", 
+                "ImgPremio1",
+                LocalDate.now(), 
+                0, 
+                tematicasSorteo, 
+                150, 
+                "LocalidadTest1", 
+                "Sorteo interesante Test1"
+            )
+            sorteoCreado.agregarParticipante(p1)
+            sorteoCreado.agregarParticipante(p2)
+            sorteoCreado.agregarParticipante(p3)
+            sorteoCreado.generarGanador() // significa que finalizo el sorteo
+
+        when:
+            Map resultados = sorteoCreado.generarEstadisticaPonderacionPorTematica()
+        then:
+            resultados['TematicaTest1'] == 67
+            resultados['TematicaTest2'] == 33
+            resultados['TematicaTest3'] == 0
     }
 
 }

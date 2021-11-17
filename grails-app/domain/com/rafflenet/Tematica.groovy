@@ -7,4 +7,8 @@ class Tematica {
 
     static constraints = {
     }
+
+    def vincular() {}
+
+    def desvincunlar() {}
 }
