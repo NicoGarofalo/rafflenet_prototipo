@@ -321,5 +321,56 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             sorteador.misSorteos[0].estado.equals(1)//Finalizado
     }
 
-    
+    // Como sorteador
+    // Quiero visualizar el análisis de un sorteo finalizado
+    // Para analizar las estadísticas generales obtenidas del mismo
+
+    // Dado que un sorteo finalizó
+    // Y que se cuenta con el número de participantes y el número de visualizaciones del sorteo
+    // Cuando se pide generar un análisis de cantidad de participantes contra cantidad de 
+    // visualizaciones totales del sorteo
+    // Entonces la aplicación realizará la división entre cantidad 
+    // de participantes y cantidad de visualizaciones totales del sorteo, y lo convertirá en porcentaje
+
+
+
+    void "Test Sorteador - CA2 - Visualización de sorteo finalizado" () {
+        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+        Participante p1 = new Participante(localidad:"localidad1", coidigoPostal:1234)
+        Participante p2 = new Participante(localidad:"localidad2", coidigoPostal:2345)
+        Participante p3 = new Participante(localidad:"localidad3", coidigoPostal:3456)
+        Participante p4 = new Participante(localidad:"localidad4", coidigoPostal:4567)
+        Participante p5 = new Participante(localidad:"localidad5", coidigoPostal:5678)
+
+        Tematica tematica1 = new Tematica(
+            nombre: "TematicaTest1"
+        )
+        Set<Tematica> tematicas = [tematica1]
+        
+        given:
+            Sorteo sorteoCreado = sorteador.crearSorteo(
+                "DescripcionPremio1", 
+                "ImgPremio1",
+                LocalDate.now(), 
+                0, 
+                tematicas, 
+                150, 
+                "LocalidadTest1", 
+                "Sorteo interesante Test1"
+            )
+            sorteoCreado.agregarParticipante(p1)
+            sorteoCreado.agregarParticipante(p2)
+            sorteoCreado.agregarParticipante(p3)
+            sorteoCreado.agregarParticipante(p4)
+            sorteoCreado.agregarParticipante(p5)
+            sorteoCreado.generarGanador()
+
+            sorteoCreado.detalle.cantVisualizaciones = 15 //hardcodeo cant visualizaciones
+        when:
+            int resultados = sorteoCreado.detalle.generarEstadisticaParticipanteVsVisualizaciones()
+        then:
+            int resultadoEsperado = 5 / 15 * 100
+            resultados.equals(resultadoEsperado)
+    }
+
 }

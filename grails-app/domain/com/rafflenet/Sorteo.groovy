@@ -50,6 +50,8 @@ class Sorteo {
 
     def agregarParticipante(Participante participante) {
         participantes << participante
+        this.detalle.cantVisualizaciones += 1
+        this.detalle.cantParticipantesActual += 1
     }
 
     def obtenerCantidadParticipante() {
