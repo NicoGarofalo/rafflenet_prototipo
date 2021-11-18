@@ -426,4 +426,70 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             resultados['TematicaTest3'] == 0
     }
 
+    // Dado que un sorteo finalizó
+    // Y que se tiene la lista de cupones de beneficio con sus estados
+    // Cuando se pide generar un análisis de cupones de beneficio vigentes contra canjeados
+    // Entonces la aplicación generará la división entre la cantidad de cupones de beneficios vigentes a canjear y los canjeados 
+    // , y se convertirá en porcentaje (multiplicando por 100)
+    // Y el sorteador podrá visualizar este número generado
+
+
+    void "Test Sorteador - CA1 - Visualización de sorteo finalizado" () {
+        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+
+        Tematica tematica1 = new Tematica(
+            nombre: "TematicaTest1"
+        )
+        Set<Tematica> tematicasSorteo = [tematica1]
+
+        Sorteo sorteoCreado = sorteador.crearSorteo(
+            "DescripcionPremio1", 
+            "ImgPremio1",
+            LocalDate.now().plusDays(10), 
+            0, 
+            tematicasSorteo, 
+            150, 
+            "LocalidadTest1", 
+            "Sorteo interesante Test1"
+        )
+
+        CuponBeneficio cuponTest1 = new CuponBeneficio(
+            codigoCupon: "4ABX23S",
+            descripcionCupon: "Descripcion test del cupon",
+            fechaVencimiento: new Date().toInstant().plus(1),
+            estado: 1 // Vigente
+        )
+        CuponBeneficio cuponTest2 = new CuponBeneficio(
+            codigoCupon: "4AK3L3O",
+            descripcionCupon: "Descripcion test 2 del cupon",
+            fechaVencimiento: new Date().toInstant().plus(1),
+            estado: 1 // Vigente
+        )
+        CuponBeneficio cuponTest3 = new CuponBeneficio(
+            codigoCupon: "4AT9D14",
+            descripcionCupon: "Descripcion test 3 del cupon",
+            fechaVencimiento: new Date().toInstant().plus(1),
+            estado: 1 // Vigente
+        )
+        CuponBeneficio cuponTest4 = new CuponBeneficio(
+            codigoCupon: "4AP1U55",
+            descripcionCupon: "Descripcion test 3 del cupon",
+            fechaVencimiento: new Date().toInstant().plus(1),
+            estado: 1 // Vigente
+        )
+        
+        Set<CuponBeneficio> cupones = [cuponTest1,cuponTest2,cuponTest3,cuponTest4]
+        sorteoCreado.setCuponesBeneficio(cupones) //Metodo solo para tests
+
+        given:
+            sorteoCreado.generarGanador()//Esto finaliza sorteo
+        when:
+            sorteador.canjearCupon(sorteoCreado,"4ABX23S")
+            sorteador.canjearCupon(sorteoCreado,"4AT9D14")
+            sorteador.canjearCupon(sorteoCreado,"4AP1U55")
+            Map resultados = sorteoCreado.generarEstadisticaCuponVigenteVsCanjeado()
+        then:
+            resultados['Vigentes'] == 25
+            resultados['Canjeados'] == 75
+    }
 }

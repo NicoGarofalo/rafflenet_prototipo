@@ -67,4 +67,8 @@ class Sorteo {
     def generarEstadisticaPonderacionPorTematica() {
         return this.detalle.generarEstadisticaPonderacionPorTematica(this.tematicas, this.participantes)
     }
+
+    def generarEstadisticaCuponVigenteVsCanjeado() {
+        return this.detalle.generarEstadisticaCuponVigenteVsCanjeado(this.cuponesBeneficio)
+    }
 }

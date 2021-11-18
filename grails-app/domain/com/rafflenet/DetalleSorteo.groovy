@@ -32,4 +32,19 @@ class DetalleSorteo {
         }
         return tematicasSorteo.each{it.value = Math.round(it.value / this.cantParticipantesActual * 100)}
     }
+
+    def generarEstadisticaCuponVigenteVsCanjeado(Set<CuponBeneficio> cuponesBeneficio) {
+        
+        def estadoCuponesBeneficio = ["Vigentes":0,"Canjeados":0]
+
+        for (c in cuponesBeneficio) {
+            if (c.estado == 2)
+                estadoCuponesBeneficio["Canjeados"] += 1
+            if (c.estado == 1)
+                estadoCuponesBeneficio["Vigentes"] += 1
+        }
+        
+        int totalCupones = cuponesBeneficio.size()
+        return estadoCuponesBeneficio.each{it.value = Math.round(it.value / totalCupones * 100)}
+    }
 }
