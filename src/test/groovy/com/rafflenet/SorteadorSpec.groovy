@@ -18,7 +18,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
     // US Creación de sorteo no exprés: Como sorteador quiero crear un sorteo para que los participantes puedan inscribirse al mismo
 
     // CA: Dado que el sorteador define los datos del sorteo: descripción e imagen del premio, duración del sorteo en días,
-    //     temáticas, limite de participantes, localidad, descripción del sorteo
+    //     temáticas, limite de participantes, descripción del sorteo
     //     Y que el tipo de sorteo seleccionado por el sorteador es no exprés
     //     Y que todos los campos son obligatorios
     //     Cuando el sorteador decide crear el sorteo
@@ -38,7 +38,6 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             LocalDate fechaVencimiento = LocalDate.now().plusDays(10)
             int tipo = 0
             int limiteParticipante = 100
-            String localidad = "LocalidadTest1"
             String descripSorteo = "Sorteo interesante Test1"
 
             Tematica tematica1 = new Tematica(
@@ -48,7 +47,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         
         when:
             Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, tematicas,
-             limiteParticipante, localidad, descripSorteo)
+             limiteParticipante, descripSorteo)
 
         then:
             descripPremio.equals(sorteoCreado.descripcionPremio)
@@ -56,7 +55,6 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             fechaVencimiento.equals(sorteoCreado.fechaVencimiento)
             tipo.equals(sorteoCreado.tipo)
             limiteParticipante.equals(sorteoCreado.detalle.limiteParticipante)
-            localidad.equals(sorteoCreado.detalle.localidad)
             descripSorteo.equals(sorteoCreado.detalle.descripSorteo)
             dateNow.year.equals(sorteoCreado.detalle.fechaCreacion.year)
             dateNow.month.equals(sorteoCreado.detalle.fechaCreacion.month)
@@ -81,7 +79,6 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         LocalDate fechaVencimiento = LocalDate.now().plusDays(10)
         int tipo = 0
         int limiteParticipante = 150
-        String localidad = "LocalidadTest1"
         String descripSorteo = "Sorteo interesante Test1"
 
         
@@ -92,7 +89,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         Set<Tematica> tematicas = [tematica1]
 
         Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, 
-            tipo, tematicas, limiteParticipante, localidad, descripSorteo)
+            tipo, tematicas, limiteParticipante, descripSorteo)
 
         CuponBeneficio cuponTest1 = new CuponBeneficio(
             codigoCupon: "4ABX23S",
@@ -136,7 +133,6 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         LocalDate fechaVencimiento = LocalDate.now().plusDays(10)
         int tipo = 0
         int limiteParticipante = 150
-        String localidad = "LocalidadTest1"
         String descripSorteo = "Sorteo interesante Test1"
 
 
@@ -146,7 +142,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         Set<Tematica> tematicas = [tematica1]
 
         Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, 
-            tipo, tematicas, limiteParticipante, localidad, descripSorteo)
+            tipo, tematicas, limiteParticipante, descripSorteo)
         
         CuponBeneficio cuponTest1 = new CuponBeneficio(
             codigoCupon: "4ABX23S",
@@ -189,7 +185,6 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         LocalDate fechaVencimiento = LocalDate.now().plusDays(10)
         int tipo = 0
         int limiteParticipante = 150
-        String localidad = "LocalidadTest1"
         String descripSorteo = "Sorteo interesante Test1"
 
 
@@ -199,7 +194,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         Set<Tematica> tematicas = [tematica1]
 
         Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, 
-            tipo, tematicas, limiteParticipante, localidad, descripSorteo)
+            tipo, tematicas, limiteParticipante, descripSorteo)
         
         CuponBeneficio cuponTest1 = new CuponBeneficio(
             codigoCupon: "4ABX23S",
@@ -242,7 +237,6 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         LocalDate fechaVencimiento = LocalDate.now().plusDays(10)
         int tipo = 0
         int limiteParticipante = 150
-        String localidad = "LocalidadTest1"
         String descripSorteo = "Sorteo interesante Test1"
 
 
@@ -252,7 +246,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         Set<Tematica> tematicas = [tematica1]
 
         Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento,
-            tipo, tematicas, limiteParticipante, localidad, descripSorteo)
+            tipo, tematicas, limiteParticipante, descripSorteo)
         
         CuponBeneficio cuponTest1 = new CuponBeneficio(
             codigoCupon: "4ABX23S",
@@ -296,7 +290,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         )
         Set<Tematica> tematicas = [tematica1]
 
-        Participante nuevoParticipante = new Participante(localidad:"localidad1", coidigoPostal:1234)
+        Participante nuevoParticipante = new Participante()
 
         given:
             Sorteo sorteoCreado = sorteador.crearSorteo(
@@ -305,8 +299,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
                 LocalDate.now().plusDays(10), 
                 0, 
                 tematicas, 
-                150, 
-                "LocalidadTest1", 
+                150,
                 "Sorteo interesante Test1"
             )
 
@@ -336,11 +329,11 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
 
     void "Test Sorteador - CA2 - Visualización de sorteo finalizado" () {
         Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
-        Participante p1 = new Participante(localidad:"localidad1", coidigoPostal:1234)
-        Participante p2 = new Participante(localidad:"localidad2", coidigoPostal:2345)
-        Participante p3 = new Participante(localidad:"localidad3", coidigoPostal:3456)
-        Participante p4 = new Participante(localidad:"localidad4", coidigoPostal:4567)
-        Participante p5 = new Participante(localidad:"localidad5", coidigoPostal:5678)
+        Participante p1 = new Participante()
+        Participante p2 = new Participante()
+        Participante p3 = new Participante()
+        Participante p4 = new Participante()
+        Participante p5 = new Participante()
 
         Tematica tematica1 = new Tematica(
             nombre: "TematicaTest1"
@@ -354,8 +347,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
                 LocalDate.now(), 
                 0, 
                 tematicas, 
-                150, 
-                "LocalidadTest1", 
+                150,
                 "Sorteo interesante Test1"
             )
             sorteoCreado.agregarParticipante(p1)
@@ -394,9 +386,9 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         )
         Set<Tematica> tematicasSorteo = [tematica1,tematica2,tematica3]
 
-        Participante p1 = new Participante(localidad:"localidad1", coidigoPostal:1234)
-        Participante p2 = new Participante(localidad:"localidad2", coidigoPostal:2345)
-        Participante p3 = new Participante(localidad:"localidad3", coidigoPostal:2366)
+        Participante p1 = new Participante()
+        Participante p2 = new Participante()
+        Participante p3 = new Participante()
 
         p1.elegirTematica(tematica1)
         p2.elegirTematica(tematica2)
@@ -409,8 +401,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
                 LocalDate.now(), 
                 0, 
                 tematicasSorteo, 
-                150, 
-                "LocalidadTest1", 
+                150,
                 "Sorteo interesante Test1"
             )
             sorteoCreado.agregarParticipante(p1)
@@ -448,8 +439,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             LocalDate.now().plusDays(10), 
             0, 
             tematicasSorteo, 
-            150, 
-            "LocalidadTest1", 
+            150,
             "Sorteo interesante Test1"
         )
 

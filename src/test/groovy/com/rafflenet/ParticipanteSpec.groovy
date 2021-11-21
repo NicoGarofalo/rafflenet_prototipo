@@ -23,17 +23,15 @@ class ParticipanteSpec extends Specification implements DomainUnitTest<Participa
 
     void "Test Participante - Participar en un sorteo"() {
 
-        Participante nuevoParticipante = new Participante(localidad:"localidad1", coidigoPostal:1234)
+        Participante nuevoParticipante = new Participante()
 
         DetalleSorteo nuevoDetalle1 = new DetalleSorteo(
             limiteParticipante: 100,
-            localidad: "LocalidadTest1",
             descripSorteo: "Sorteo interesante Test1"
         )
 
         DetalleSorteo nuevoDetalle2 = new DetalleSorteo(
             limiteParticipante: 150,
-            localidad: "LocalidadTest1",
             descripSorteo: "Sorteo interesante Test1"
         )
 

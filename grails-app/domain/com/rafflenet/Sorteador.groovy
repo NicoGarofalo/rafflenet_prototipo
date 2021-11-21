@@ -17,11 +17,10 @@ class Sorteador {
     }
 
     def crearSorteo( String descripPremio, String imgPremio, LocalDate fechaVencimiento, 
-    int tipo, Set<Tematica> tematicas,int limiteParticipante, String localidad, String descripSorteo) {
+    int tipo, Set<Tematica> tematicas,int limiteParticipante, String descripSorteo) {
 
         DetalleSorteo nuevoDetalle = new DetalleSorteo(
             limiteParticipante: limiteParticipante,
-            localidad: localidad,
             descripSorteo: descripSorteo
         )
 
@@ -49,9 +48,7 @@ class Sorteador {
         return misSorteos.size()
     }
 
-    def finalizarSorteoManual() {
-
-    }
+    def finalizarSorteoManual() {}
 
     def obtenerGanador() {}
 

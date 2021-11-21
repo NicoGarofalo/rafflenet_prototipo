@@ -7,8 +7,10 @@ class Usuario {
     String email
     String telefono
     int rol
-    Participante participante
-    Sorteador sorteador
+    Set<Participante> participantes = []
+    Set<Sorteador> sorteadores = []
+    // Participante participante
+    // Sorteador sorteador
 
     static constraints = {
         nombre blank: false, nullable: false
@@ -23,21 +25,5 @@ class Usuario {
         // rol == 0 ? rol = 1 : rol = 0
 
     }
-
-    // def participar() {
-    //     rol == 0 && participante.participar()
-    // }
-
-    // def elegirTematica() {
-    //     rol == 0 && participante.elegirTematica()
-    // }
-
-    // def eliminarTematica() {
-    //     rol == 0 && participante.eliminarTematica()
-    // }
-
-    // def abandonar() {
-    //     rol == 0 && participante.abandonar()
-    // }
 
 }

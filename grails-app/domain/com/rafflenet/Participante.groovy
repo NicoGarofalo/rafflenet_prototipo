@@ -2,16 +2,12 @@ package com.rafflenet
 
 class Participante {
 
-    String localidad
-    int codigoPostal
     Set<Sorteo> misSorteos = []
-    // private Set<CuponBeneficio> misCupones = []
+    //Set<CuponBeneficio> misCupones = []
     Set<Tematica> tematicas = []
     
 
     static constraints = {
-        localidad blank: false, nullable: false
-        codigoPostal min: 4, blank: false, nullable: false, unique: true
         misSorteos nullable: false
     }
 
@@ -29,6 +25,6 @@ class Participante {
 
     def eliminarTematica() {}
 
-    def abandonar() {}
+    def abandonarSorteo() {}
 
 }
