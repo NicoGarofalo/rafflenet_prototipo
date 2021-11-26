@@ -9,6 +9,8 @@ class DetalleSorteo {
     String descripSorteo
 
     static constraints = {
+        limiteParticipante nullable: false
+        descripSorteo blank: false
     }
 
     def generarEstadisticaParticipanteVsVisualizaciones() {

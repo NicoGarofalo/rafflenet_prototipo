@@ -17,6 +17,8 @@ class Sorteo {
 
     static constraints = {
         descripcionPremio blank: false, nullable: false
+        imagenPremio blank: false, nullable: false
+        fechaVencimiento blank: false nullable: false
         tipo blank: false, nullable: false
         tematicas blank: false, nullable: false
         detalle nullable: false
@@ -71,4 +73,5 @@ class Sorteo {
     def generarEstadisticaCuponVigenteVsCanjeado() {
         return this.detalle.generarEstadisticaCuponVigenteVsCanjeado(this.cuponesBeneficio)
     }
+
 }

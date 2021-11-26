@@ -9,8 +9,6 @@ class Usuario {
     int rol
     Set<Participante> participantes = []
     Set<Sorteador> sorteadores = []
-    // Participante participante
-    // Sorteador sorteador
 
     static constraints = {
         nombre blank: false, nullable: false

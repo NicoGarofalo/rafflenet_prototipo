@@ -12,6 +12,7 @@ class Sorteador {
     // ]
 
     static constraints = {
+        logoNegocio blank: true, nullable: true
         nombreRepresentante blank: false, nullable: false
         misSorteos nullable: false
     }

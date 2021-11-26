@@ -6,6 +6,7 @@ class Tematica {
     Set<Tematica> tematicasRelacionadas = []
 
     static constraints = {
+        nombre blank: false nullable: false unique: true
     }
 
     def vincular() {}

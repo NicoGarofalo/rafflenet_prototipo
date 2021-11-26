@@ -8,7 +8,6 @@ class Participante {
     
 
     static constraints = {
-        misSorteos nullable: false
     }
 
     def participar(Sorteo sorteo) {
