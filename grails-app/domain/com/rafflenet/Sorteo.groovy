@@ -9,9 +9,9 @@ class Sorteo {
     LocalDate fechaVencimiento
     int tipo
     Set<Tematica> tematicas = []
-    Set<CuponBeneficio> cuponesBeneficio = []
-    Set<Participante> participantes = []
-    Participante ganadorSorteo
+    Set<Cupon> cupones = []
+    Set<Usuario> Usuarios = []
+    Usuario ganadorSorteo
     int estado = 0
     DetalleSorteo detalle
 
@@ -24,7 +24,7 @@ class Sorteo {
         detalle nullable: false
     }
 
-    def generarGanador() {
+    def finalizar() {
         int cantidadParticipantes = this.obtenerCantidadParticipante()
         if(cantidadParticipantes == 0){
             return null
@@ -42,15 +42,15 @@ class Sorteo {
     }
 
     //Para tests
-    def setCuponesBeneficio(Set<CuponBeneficio> cupones) {
-        this.cuponesBeneficio = cupones
+    def setCupones(Set<Cupon> cupones) {
+        this.cupones = cupones
     }
     //Para tests
-    def obtenerCuponesBeneficio(Set<CuponBeneficio> cupones) {
-        return this.cuponesBeneficio
+    def obtenerCupones(Set<Cupon> cupones) {
+        return this.cupones
     }
 
-    def agregarParticipante(Participante participante) {
+    def agregarParticipante(Usuario participante) {
         participantes << participante
         this.detalle.cantVisualizaciones += 1
         this.detalle.cantParticipantesActual += 1
@@ -60,10 +60,10 @@ class Sorteo {
         return participantes.size()
     }
 
-    def crearCuponBeneficio() {}
+    def crearCupon() {}
 
     def obtenerCupon(String codigoCupon) {
-        return cuponesBeneficio.find{cupon -> cupon.codigoCupon == codigoCupon}
+        return cupones.find{cupon -> cupon.codigoCupon == codigoCupon}
     }
 
     def generarEstadisticaPonderacionPorTematica() {
@@ -71,7 +71,7 @@ class Sorteo {
     }
 
     def generarEstadisticaCuponVigenteVsCanjeado() {
-        return this.detalle.generarEstadisticaCuponVigenteVsCanjeado(this.cuponesBeneficio)
+        return this.detalle.generarEstadisticaCuponVigenteVsCanjeado(this.cupones)
     }
 
 }

@@ -7,8 +7,10 @@ class Usuario {
     String email
     String telefono
     int rol
-    Set<Participante> participantes = []
-    Set<Sorteador> sorteadores = []
+    String logoNegocio
+    String nombreRepresentante
+    Set<Tematica> tematicas = []
+    Set<Vinculo> misVinculos = []
 
     static constraints = {
         nombre blank: false, nullable: false
@@ -18,10 +20,16 @@ class Usuario {
         rol nullable: false
     }
 
-    def cambiarRol() {
-        
-        // rol == 0 ? rol = 1 : rol = 0
-
+    def obtenerCantidadParticipaciones() {
+        return participaciones.size()
     }
+
+    def cantidadAdministrdorSorteo() {
+        return administradores.size()
+    }
+
+    def elegirTematica(Tematica tmtica) {}
+
+    def eliminarTematica(Tematica tmtica) {}
 
 }

@@ -2,10 +2,8 @@ package com.rafflenet
 
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
-import java.time.*
 
-
-class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
+class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
 
     def setup() {
     }
@@ -13,7 +11,49 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
     def cleanup() {
     }
 
-    // Incluimos US y CA Trivial con fines de práctica para Test Spock
+    // Dado que los sorteos están publicados
+    // Y que el participante puede visualizar información básica de cada sorteo
+    // Y que está la opción de ver más detalles de cada sorteo
+    // Y que se le permita al participante participar o no
+    // Cuando el participante elige participar
+    // Entonces la aplicación lo agrega a la lista de participantes del sorteo
+    // Y el participante agrega al sorteo a su lista de sorteos
+
+    void "Test Participante - Participar en un sorteo"() {
+
+        Usuario participante = new Usuario(
+            nombre: 'Fulanito',
+            constrasenia: '1234hola',
+            email: 'fulanito@correoElectronico.com',
+            telefono: '115584993',
+            rol: 0
+        )
+
+        given:
+            DetalleSorteo nuevoDetalle = new DetalleSorteo(
+                limiteParticipante: 100,
+                descripSorteo: "Sorteo interesante Test1"
+            )
+
+            Sorteo sorteoCreado =  new Sorteo(
+                descripcionPremio: "PremioTest1",
+                imagenPremio: "ImgPremioTest1",
+                duracionDias: 10,
+                tipo: 0,
+                tematicas: "TematicaTest1",
+                participantes: [],
+                ganadorSorteo: "",
+                detalle: nuevoDetalle
+            )
+        when:
+            Vinculo nuevoVinculo = new Vinculo()
+            nuevoVinculo.participar(usuario, listaSorteos[1])
+            usuario.misVinculos << nuevoVinculo
+        then:
+            sorteoCreado2.obtenerCantidadParticipante().equals(1)
+            usuario.obtenerCantidadParticipaciones().equals(1)
+
+    }
 
     // US Creación de sorteo no exprés: Como sorteador quiero crear un sorteo para que los participantes puedan inscribirse al mismo
 
@@ -25,8 +65,15 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
     //     Entonces la aplicación verifica que todos los campos estan completos, crea el sorteo con fecha de creación
     //     correspondiente al día actual y lo agrega a la lista de sorteos del sorteador
 
-
     void "Test Sorteador - Creación de sorteo no exprés"() {
+
+        Usuario sorteador = new Usuario(
+            nombre: 'Fulanito',
+            constrasenia: '1234hola',
+            email: 'fulanito@correoElectronico.com',
+            telefono: '115584993',
+            rol: 1
+        )
         given: 
             String descripPremio = "PremioTest1"
             String imgPremio = "ImgPremioTest1"
@@ -41,8 +88,11 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             Set<Tematica> tematicas = [tematica1]
         
         when:
-            Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, tematicas,
-             limiteParticipante, descripSorteo)
+            AdministradorDeSorteo nuevoAdministrador = new AdministradorDeSorteo(sorteador)
+
+            Sorteo sorteoCreado = nuevoAdministrador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, tematicas,
+            limiteParticipante, descripSorteo)
+            sorteador.administradores << nuevoAdministrador
 
         then:
             descripPremio.equals(sorteoCreado.descripcionPremio)
@@ -51,7 +101,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             tipo.equals(sorteoCreado.tipo)
             limiteParticipante.equals(sorteoCreado.detalle.limiteParticipante)
             descripSorteo.equals(sorteoCreado.detalle.descripSorteo)
-            sorteador.cantidadSorteos().equals(1)
+            sorteador.cantidadAdministrdorSorteo().equals(1)
         
     }
 
@@ -63,24 +113,48 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
     // Entonces la aplicación cambia el estado del cupón de Vigente a Canjeado y le informa al sorteador que el cupón fue canjeado.
 
     void "Test Sorteador - CA1 - Utilización de cupón de beneficio por participación"() {
-        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
-        
-        String descripPremio = "Premio1"
-        String imgPremio = "ImgPremio1"
-        LocalDate fechaVencimiento = LocalDate.now().plusDays(10)
-        int tipo = 0
-        int limiteParticipante = 150
-        String descripSorteo = "Sorteo interesante Test1"
+
+        // Crear sorteador y participante
+        Usuario sorteador = new Usuario(
+            nombre: 'FulanitoSorteador',
+            constrasenia: '1234Sorteador',
+            email: 'fulanitoSort@correoElectronico.com',
+            telefono: '115584993',
+            rol: 1
+        )
+        Usuario participante = new Usuario(
+            nombre: 'FulanitaParticipante',
+            constrasenia: '1234Participante',
+            email: 'fulanitaP@correoElectronico.com',
+            telefono: '115636622',
+            rol: 0
+        )
 
         
+        String descripPremio = "PremioTest1"
+        String imgPremio = "ImgPremioTest1"
+        LocalDate fechaVencimiento = LocalDate.now().plusDays(10)
+        int tipo = 0
+        int limiteParticipante = 100
+        String descripSorteo = "Sorteo interesante Test1"
 
         Tematica tematica1 = new Tematica(
             nombre: "TematicaTest1"
         )
         Set<Tematica> tematicas = [tematica1]
 
-        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, 
-            tipo, tematicas, limiteParticipante, descripSorteo)
+
+        AdministradorDeSorteo nuevoAdministrador = new AdministradorDeSorteo(sorteador)
+
+        //Crear sorteo y agregarlo al sorteador
+        Sorteo sorteoCreado = nuevoAdministrador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
+        tematicas, limiteParticipante, descripSorteo)
+        sorteador.administradores << nuevoAdministrador
+
+        //Crear participacion y agregarla al participante
+        Participacion nuevaParticipacion = new Participacion()
+        nuevaParticipacion.participar(participante, sorteoCreado)
+        participante.participaciones << nuevaParticipacion
 
         CuponBeneficio cuponTest1 = new CuponBeneficio(
             codigoCupon: "4ABX23S",
@@ -100,11 +174,11 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         sorteoCreado.setCuponesBeneficio(cupones) //Metodo solo para tests
 
         given:
-            sorteoCreado.generarGanador()//Esto finaliza sorteo
+            nuevoAdministrador.finalizarSorteo()
         when:
-            String cuponDisponible = sorteador.canjearCupon(sorteoCreado,"4ABX23S")
+            String mensajeCupon = nuevoAdministrador.canjearCupon("4ABX23S")
         then:
-            cuponDisponible.equals("Cupon canjeado exitosamente")
+            mensajeCupon.equals("Cupon canjeado exitosamente")
             Set<CuponBeneficio> cuponesSorteo = sorteoCreado.obtenerCuponesBeneficio()
             cuponesSorteo[0].obtenerEstado().equals(2)
     }
@@ -117,7 +191,22 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
     // Entonces la aplicación le informa al sorteador que el estado del cupón es Vencido y que ya no puede ser canjeado
 
     void "Test Sorteador - CA2 - Utilización de cupón de beneficio por participación"() {
-        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+        
+        // Crear sorteador y participante
+        Usuario sorteador = new Usuario(
+            nombre: 'FulanitoSorteador',
+            constrasenia: '1234Sorteador',
+            email: 'fulanitoSort@correoElectronico.com',
+            telefono: '115584993',
+            rol: 1
+        )
+        Usuario participante = new Usuario(
+            nombre: 'FulanitaParticipante',
+            constrasenia: '1234Participante',
+            email: 'fulanitaP@correoElectronico.com',
+            telefono: '115636622',
+            rol: 0
+        )
         
         String descripPremio = "Premio1"
         String imgPremio = "ImgPremio1"
@@ -126,36 +215,47 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         int limiteParticipante = 150
         String descripSorteo = "Sorteo interesante Test1"
 
-
         Tematica tematica1 = new Tematica(
             nombre: "TematicaTest1"
         )
         Set<Tematica> tematicas = [tematica1]
 
-        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, 
-            tipo, tematicas, limiteParticipante, descripSorteo)
+        
         
         CuponBeneficio cuponTest1 = new CuponBeneficio(
             codigoCupon: "4ABX23S",
             descripcionCupon: "Descripcion test del cupon",
             fechaVencimiento: new Date().toInstant().minus(1),
-            estado: 1 // Vigente
+            estado: 3 // Vigente
         )
-
+        
         CuponBeneficio cuponTest2 = new CuponBeneficio(
             codigoCupon: "4AK3L3O",
             descripcionCupon: "Descripcion test 2 del cupon",
             fechaVencimiento: new Date(),
-            estado: 1 // Vigente
+            estado: 3 // Vigente
         )
         
         Set<CuponBeneficio> cupones = [cuponTest1,cuponTest2]
+
+        AdministradorDeSorteo nuevoAdministrador = new AdministradorDeSorteo(sorteador)
+
+        //Crear sorteo y agregarlo al sorteador
+        Sorteo sorteoCreado = nuevoAdministrador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
+        tematicas, limiteParticipante, descripSorteo)
+        sorteador.administradores << nuevoAdministrador
+
+        //Crear participacion y agregarla al participante
+        Participacion nuevaParticipacion = new Participacion()
+        nuevaParticipacion.participar(participante, sorteoCreado)
+        participante.participaciones << nuevaParticipacion
+
         sorteoCreado.setCuponesBeneficio(cupones) //Metodo solo para tests
 
         given:
             sorteoCreado.generarGanador()//Esto finaliza sorteo
         when:
-            String cuponDisponible = sorteador.canjearCupon(sorteoCreado,"4ABX23S")
+            String cuponDisponible = nuevoAdministrador.canjearCupon(sorteoCreado,"4ABX23S")
         then:
             cuponDisponible.equals('Cupon vencido')
             cupones[0].obtenerEstado().equals(3)
@@ -169,7 +269,22 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
     // Entonces la aplicación le informa al sorteador que el estado del cupón es Canjeado y que ya no puede ser canjeado
 
     void "Test Sorteador - CA4 - Utilización de cupón de beneficio por participación"() {
-        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+        
+        // Crear sorteador y participante
+        Usuario sorteador = new Usuario(
+            nombre: 'FulanitoSorteador',
+            constrasenia: '1234Sorteador',
+            email: 'fulanitoSort@correoElectronico.com',
+            telefono: '115584993',
+            rol: 1
+        )
+        Usuario participante = new Usuario(
+            nombre: 'FulanitaParticipante',
+            constrasenia: '1234Participante',
+            email: 'fulanitaP@correoElectronico.com',
+            telefono: '115636622',
+            rol: 0
+        )
         
         String descripPremio = "Premio1"
         String imgPremio = "ImgPremio1"
@@ -190,7 +305,7 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         CuponBeneficio cuponTest1 = new CuponBeneficio(
             codigoCupon: "4ABX23S",
             descripcionCupon: "Descripcion test del cupon",
-            fechaVencimiento: new Date().toInstant().plus(1),
+            fechaVencimiento: new Date(),
             estado: 2 // Canjeado
         )
 
@@ -202,12 +317,25 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
         )
         
         Set<CuponBeneficio> cupones = [cuponTest1,cuponTest2]
+
+        AdministradorDeSorteo nuevoAdministrador = new AdministradorDeSorteo(sorteador)
+
+        //Crear sorteo y agregarlo al sorteador
+        Sorteo sorteoCreado = nuevoAdministrador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
+        tematicas, limiteParticipante, descripSorteo)
+        sorteador.administradores << nuevoAdministrador
+
+        //Crear participacion y agregarla al participante
+        Participacion nuevaParticipacion = new Participacion()
+        nuevaParticipacion.participar(participante, sorteoCreado)
+        participante.participaciones << nuevaParticipacion
+
         sorteoCreado.setCuponesBeneficio(cupones) //Metodo solo para tests
 
         given:
             sorteoCreado.generarGanador()//Esto finaliza sorteo
         when:
-            String cuponDisponible = sorteador.canjearCupon(sorteoCreado,"4ABX23S")
+            String cuponDisponible = nuevoAdministrador.canjearCupon(sorteoCreado,"4ABX23S")
         then:
             cuponDisponible.equals("Cupon ya canjeado")
             Set<CuponBeneficio> cuponesSorteo = sorteoCreado.obtenerCuponesBeneficio()
@@ -473,4 +601,5 @@ class SorteadorSpec extends Specification implements DomainUnitTest<Sorteador> {
             resultados['Vigentes'] == 25
             resultados['Canjeados'] == 75
     }
+
 }

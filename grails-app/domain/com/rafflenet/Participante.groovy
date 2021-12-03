@@ -22,8 +22,4 @@ class Participante {
         tematicas << tematicaElegido
     }
 
-    def eliminarTematica() {}
-
-    def abandonarSorteo() {}
-
 }

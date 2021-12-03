@@ -3,7 +3,7 @@ package com.rafflenet
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class CuponBeneficioSpec extends Specification implements DomainUnitTest<CuponBeneficio> {
+class CuponSpec extends Specification implements DomainUnitTest<Cupon> {
 
     def setup() {
     }

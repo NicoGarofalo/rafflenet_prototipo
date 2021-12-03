@@ -1,6 +1,6 @@
 package com.rafflenet
 
-class CuponBeneficio {
+class Cupon {
 
 
     String codigoCupon //Aca agregar un = metodoQueGenereCodigoCupon
