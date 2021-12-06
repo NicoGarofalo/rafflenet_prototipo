@@ -20,16 +20,16 @@ class Usuario {
         rol nullable: false
     }
 
-    def obtenerCantidadParticipaciones() {
-        return participaciones.size()
+    def obtenerCantidadVinculos() {
+        return misVinculos.size()
     }
 
-    def cantidadAdministrdorSorteo() {
-        return administradores.size()
+    def elegirTematica(Tematica tematica) {
+        this.tematicas << tematica
     }
 
-    def elegirTematica(Tematica tmtica) {}
+    def eliminarTematica(Tematica tematica) {
 
-    def eliminarTematica(Tematica tmtica) {}
+    }
 
 }

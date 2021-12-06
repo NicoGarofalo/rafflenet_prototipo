@@ -2,6 +2,7 @@ package com.rafflenet
 
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
+import java.time.*
 
 class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<EstadisticaSorteo> {
 
@@ -25,11 +26,61 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
 
     void "Test Sorteador - CA2 - Visualización de análisis sorteo finalizado" () {
 
+        Usuario sorteador = new Usuario(
+            nombre: 'FulanitoSort',
+            constrasenia: '1234hola',
+            email: 'fulanito@correoElectronico.com',
+            telefono: '115584993',
+            rol: 1
+        )
+        Usuario p1 = new Usuario(
+            nombre: 'Fulanito1',
+            constrasenia: 'contra',
+            email: 'fulanito1@correo.com',
+            telefono: '115585993',
+            rol: 0
+        )
+        Usuario p2 = new Usuario(
+            nombre: 'Fulanito2',
+            constrasenia: '1234',
+            email: 'fulanito2@mail.com',
+            telefono: '115584993',
+            rol: 0
+        )
+        Usuario p3 = new Usuario(
+            nombre: 'Fulanito3',
+            constrasenia: 'hola',
+            email: 'fulanito3@mailfiuba.com',
+            telefono: '1234567890',
+            rol: 0
+        )
+        Usuario p4 = new Usuario(
+            nombre: 'Fulanito4',
+            constrasenia: '1234567',
+            email: 'fulanito4@fiubamail.com',
+            telefono: '115558253',
+            rol: 0
+        )
+        Usuario p5 = new Usuario(
+            nombre: 'Fulanito5',
+            constrasenia: '1234hola',
+            email: 'fulanito5@mailuca.com',
+            telefono: '115542578',
+            rol: 0
+        )
+
+        String descripPremio = "PremioTest1"
+        String imgPremio = "ImgPremioTest1"
+        LocalDate fechaVencimiento = LocalDate.now()
+        int tipo = 0
+        int limiteParticipante = 100
+        String descripSorteo = "Sorteo interesante Test1"
+
         Tematica tematica1 = new Tematica(
             nombre: "TematicaTest1"
         )
         Set<Tematica> tematicas = [tematica1]
-        
+
         given:
             //Crear sorteo y agregarlo al sorteador
             Vinculo vinculoSorteador = new Vinculo()
@@ -38,20 +89,20 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
             vinculoSorteador.vincular(sorteador, sorteoCreado)
 
             //Crear participacion y agregarla al participante
-            Participacion nuevaParticipacion = new Participacion()
-            nuevaParticipacion.vincular(participante, sorteoCreado)
-            Participacion nuevaParticipacion = new Participacion()
-            nuevaParticipacion.vincular(participante, sorteoCreado)
-            Participacion nuevaParticipacion = new Participacion()
-            nuevaParticipacion.vincular(participante, sorteoCreado)
-            Participacion nuevaParticipacion = new Participacion()
-            nuevaParticipacion.vincular(participante, sorteoCreado)
-            Participacion nuevaParticipacion = new Participacion()
-            nuevaParticipacion.vincular(participante, sorteoCreado)
+            Vinculo vinculo1 = new Vinculo()
+            vinculo1.vincular(p1, sorteoCreado)
+            Vinculo vinculo2 = new Vinculo()
+            vinculo2.vincular(p2, sorteoCreado)
+            Vinculo vinculo3 = new Vinculo()
+            vinculo3.vincular(p3, sorteoCreado)
+            Vinculo vinculo4 = new Vinculo()
+            vinculo4.vincular(p4, sorteoCreado)
+            Vinculo vinculo5 = new Vinculo()
+            vinculo5.vincular(p5, sorteoCreado)
 
-            sorteoCreado.detalle.cantVisualizaciones = 15 //hardcodeo cant visualizaciones
+            vinculoSorteador.sorteo.estadistica.cantVisualizaciones = 15 //hardcodeo cant visualizaciones
         when:
-            int resultados = sorteoCreado.detalle.generarEstadisticaParticipanteVsVisualizaciones()
+            int resultados = vinculoSorteador.sorteo.estadistica.generarEstadisticaParticipanteVsVisualizaciones()
         then:
             int resultadoEsperado = 5 / 15 * 100
             resultados.equals(resultadoEsperado)
@@ -65,7 +116,36 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
     // Y la suma de los mismos deberá ser 100%
 
  void "Test Sorteador - CA3 - Visualización de sorteo finalizado" () {
-        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+     
+        Usuario sorteador = new Usuario(
+            nombre: 'FulanitoSort',
+            constrasenia: '1234hola',
+            email: 'fulanito@correoElectronico.com',
+            telefono: '115584993',
+            rol: 1
+        )
+
+        Usuario p1 = new Usuario(
+            nombre: 'Fulanito1',
+            constrasenia: 'contra',
+            email: 'fulanito1@correo.com',
+            telefono: '115585993',
+            rol: 0
+        )
+        Usuario p2 = new Usuario(
+            nombre: 'Fulanito2',
+            constrasenia: '1234',
+            email: 'fulanito2@mail.com',
+            telefono: '115584993',
+            rol: 0
+        )
+        Usuario p3 = new Usuario(
+            nombre: 'Fulanito3',
+            constrasenia: 'hola',
+            email: 'fulanito3@mailfiuba.com',
+            telefono: '1234567890',
+            rol: 0
+        )
 
         Tematica tematica1 = new Tematica(
             nombre: "TematicaTest1"
@@ -78,16 +158,13 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
         )
         Set<Tematica> tematicasSorteo = [tematica1,tematica2,tematica3]
 
-        Participante p1 = new Participante()
-        Participante p2 = new Participante()
-        Participante p3 = new Participante()
-
         p1.elegirTematica(tematica1)
         p2.elegirTematica(tematica2)
         p3.elegirTematica(tematica1)
 
         given:
-            Sorteo sorteoCreado = sorteador.crearSorteo(
+            Vinculo vinculoSorteador = new Vinculo()
+            Sorteo sorteoCreado = vinculoSorteador.crearSorteo(
                 "DescripcionPremio1", 
                 "ImgPremio1",
                 LocalDate.now(), 
@@ -96,13 +173,19 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
                 150,
                 "Sorteo interesante Test1"
             )
-            sorteoCreado.agregarParticipante(p1)
-            sorteoCreado.agregarParticipante(p2)
-            sorteoCreado.agregarParticipante(p3)
-            sorteoCreado.generarGanador() // significa que finalizo el sorteo
+            vinculoSorteador.vincular(sorteador, sorteoCreado)
+            
+            //Crear vinculos y agregarla al participante
+            Vinculo vinculo1 = new Vinculo()
+            vinculo1.vincular(p1, sorteoCreado)
+            Vinculo vinculo2 = new Vinculo()
+            vinculo2.vincular(p2, sorteoCreado)
+            Vinculo vinculo3 = new Vinculo()
+            vinculo3.vincular(p3, sorteoCreado)
+            vinculoSorteador.finalizarSorteo()
 
         when:
-            Map resultados = sorteoCreado.generarEstadisticaPonderacionPorTematica()
+            Map resultados = vinculoSorteador.sorteo.generarEstadisticaPonderacionPorTematica()
         then:
             resultados['TematicaTest1'] == 67
             resultados['TematicaTest2'] == 33
@@ -118,61 +201,98 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
 
 
     void "Test Sorteador - CA1 - Visualización de sorteo finalizado" () {
-        Sorteador sorteador = new Sorteador(logoNegocio:"", nombreRepresentante:"Nicolas", misSorteos:[:])
+        
+        Usuario sorteador = new Usuario(
+            nombre: 'FulanitoSort',
+            constrasenia: '1234hola',
+            email: 'fulanito@correoElectronico.com',
+            telefono: '115584993',
+            rol: 1
+        )
+        Usuario p1 = new Usuario(
+            nombre: 'Fulanito1',
+            constrasenia: 'contra',
+            email: 'fulanito1@correo.com',
+            telefono: '115585993',
+            rol: 0
+        )
+        Usuario p2 = new Usuario(
+            nombre: 'Fulanito2',
+            constrasenia: '1234',
+            email: 'fulanito2@mail.com',
+            telefono: '115584993',
+            rol: 0
+        )
+        Usuario p3 = new Usuario(
+            nombre: 'Fulanito3',
+            constrasenia: 'hola',
+            email: 'fulanito3@mailfiuba.com',
+            telefono: '1234567890',
+            rol: 0
+        )
+        Usuario p4 = new Usuario(
+            nombre: 'Fulanito4',
+            constrasenia: '1234567',
+            email: 'fulanito4@fiubamail.com',
+            telefono: '115558253',
+            rol: 0
+        )
+        Usuario p5 = new Usuario(
+            nombre: 'Fulanito5',
+            constrasenia: '1234hola',
+            email: 'fulanito5@mailuca.com',
+            telefono: '115542578',
+            rol: 0
+        )
 
         Tematica tematica1 = new Tematica(
             nombre: "TematicaTest1"
         )
         Set<Tematica> tematicasSorteo = [tematica1]
 
-        Sorteo sorteoCreado = sorteador.crearSorteo(
+        Vinculo vinculoSorteador = new Vinculo()
+        Sorteo sorteoCreado = vinculoSorteador.crearSorteo(
             "DescripcionPremio1", 
             "ImgPremio1",
-            LocalDate.now().plusDays(10), 
+            LocalDate.now(), 
             0, 
             tematicasSorteo, 
             150,
             "Sorteo interesante Test1"
         )
+        vinculoSorteador.vincular(sorteador, sorteoCreado)
 
-        CuponBeneficio cuponTest1 = new CuponBeneficio(
-            codigoCupon: "4ABX23S",
-            descripcionCupon: "Descripcion test del cupon",
-            fechaVencimiento: new Date().toInstant().plus(1),
-            estado: 1 // Vigente
-        )
-        CuponBeneficio cuponTest2 = new CuponBeneficio(
-            codigoCupon: "4AK3L3O",
-            descripcionCupon: "Descripcion test 2 del cupon",
-            fechaVencimiento: new Date().toInstant().plus(1),
-            estado: 1 // Vigente
-        )
-        CuponBeneficio cuponTest3 = new CuponBeneficio(
-            codigoCupon: "4AT9D14",
-            descripcionCupon: "Descripcion test 3 del cupon",
-            fechaVencimiento: new Date().toInstant().plus(1),
-            estado: 1 // Vigente
-        )
-        CuponBeneficio cuponTest4 = new CuponBeneficio(
-            codigoCupon: "4AP1U55",
-            descripcionCupon: "Descripcion test 3 del cupon",
-            fechaVencimiento: new Date().toInstant().plus(1),
-            estado: 1 // Vigente
-        )
-        
-        Set<CuponBeneficio> cupones = [cuponTest1,cuponTest2,cuponTest3,cuponTest4]
-        sorteoCreado.setCuponesBeneficio(cupones) //Metodo solo para tests
+
+        //Crear vinculos y agregarla al participante
+        Vinculo vinculo1 = new Vinculo()
+        vinculo1.vincular(p1, sorteoCreado)
+        Vinculo vinculo2 = new Vinculo()
+        vinculo2.vincular(p2, sorteoCreado)
+        Vinculo vinculo3 = new Vinculo()
+        vinculo3.vincular(p3, sorteoCreado)
+        Vinculo vinculo4 = new Vinculo()
+        vinculo4.vincular(p4, sorteoCreado)
+        Vinculo vinculo5 = new Vinculo()
+        vinculo5.vincular(p5, sorteoCreado)
 
         given:
-            sorteoCreado.generarGanador()//Esto finaliza sorteo
+            vinculoSorteador.finalizarSorteo()//Esto finaliza sorteo
         when:
-            sorteador.canjearCupon(sorteoCreado,"4ABX23S")
-            sorteador.canjearCupon(sorteoCreado,"4AT9D14")
-            sorteador.canjearCupon(sorteoCreado,"4AP1U55")
-            Map resultados = sorteoCreado.generarEstadisticaCuponVigenteVsCanjeado()
+            //Obtener codigo de cupon y canjearlo (porque no ta hardcodeao)
+            String codigo1 = vinculo1.obtenerCodigoCupon()
+            String codigo2 = vinculo2.obtenerCodigoCupon()
+            String codigo3 = vinculo3.obtenerCodigoCupon()
+            String codigo4 = vinculo4.obtenerCodigoCupon()
+
+            vinculoSorteador.canjearCupon(codigo1)
+            vinculoSorteador.canjearCupon(codigo2)
+            vinculoSorteador.canjearCupon(codigo3)
+            vinculoSorteador.canjearCupon(codigo4)
+
+            Map resultados = vinculoSorteador.sorteo.generarEstadisticaCuponVigenteVsCanjeado()
         then:
-            resultados['Vigentes'] == 25
-            resultados['Canjeados'] == 75
+            resultados['Vigentes'] == 20
+            resultados['Canjeados'] == 80
     }
 
 }

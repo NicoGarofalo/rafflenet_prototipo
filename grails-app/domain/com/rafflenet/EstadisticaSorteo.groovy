@@ -10,7 +10,7 @@ class EstadisticaSorteo {
 
     static constraints = {
         limiteParticipante nullable: false
-        descripcioo blank: false
+        descripcion blank: false
     }
 
     def generarEstadisticaParticipanteVsVisualizaciones() {
@@ -19,19 +19,20 @@ class EstadisticaSorteo {
 
     def generarEstadisticaPonderacionPorTematica(Set<Tematica> tematicas, Set<Usuario> participantes) {
 
-        def tematicas = [:]
+        def estadisticasTematicas = [:]
 
         for (t in tematicas) {
-            tematicas[t.nombre] = 0
+            estadisticasTematicas[t.nombre] = 0
         }
         
         for (p in participantes) {
             for (t in p.tematicas) {
-                if (tematicas.containsKey(t.nombre))
-                    tematicas[t.nombre] += 1
+                if (estadisticasTematicas.containsKey(t.nombre))
+                    estadisticasTematicas[t.nombre] += 1
             }
         }
-        return tematicas.each{it.value = Math.round(it.value / this.cantParticipantesActual * 100)}
+        println estadisticasTematicas
+        return estadisticasTematicas.each{it.value = Math.round(it.value / this.cantParticipantesActual * 100)}
     }
 
     def generarEstadisticaCuponVigenteVsCanjeado(Set<Cupon> cupones) {

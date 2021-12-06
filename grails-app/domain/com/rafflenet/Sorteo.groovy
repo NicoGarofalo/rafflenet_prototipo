@@ -9,11 +9,11 @@ class Sorteo {
     LocalDate fechaVencimiento
     int tipo
     Set<Tematica> tematicas = []
+    Set<Usuario> participantes = []
     Set<Cupon> cupones = []
-    Set<Usuario> Usuarios = []
     Usuario ganadorSorteo
     int estado = 0
-    DetalleSorteo detalle
+    EstadisticaSorteo estadistica
 
     static constraints = {
         descripcionPremio blank: false, nullable: false
@@ -21,7 +21,7 @@ class Sorteo {
         fechaVencimiento blank: false, nullable: false
         tipo blank: false, nullable: false
         tematicas blank: false, nullable: false
-        detalle nullable: false
+        estadistica nullable: false
     }
 
     def finalizar() {
@@ -51,61 +51,61 @@ class Sorteo {
     }
 
     def agregarParticipante(Usuario participante) {
-        participantes << participante
-        this.detalle.cantVisualizaciones += 1
-        this.detalle.cantParticipantesActual += 1
+        this.participantes << participante
+        this.estadistica.cantVisualizaciones += 1
+        this.estadistica.cantParticipantesActual += 1
     }
 
     def obtenerCantidadParticipante() {
-        return participantes.size()
+        return this.participantes.size()
     }
 
     def crearCupon() {
         Cupon cupon = new Cupon(
-            codigoCupon: "4AK3L3O",
             descripcionCupon: "Descripcion test 1 del cupon",
-            fechaVencimiento: new Date(),
+            fechaVencimiento: LocalDate.now().plusDays(5),
             estado: 1 // Vigente
         )
-        cupones << cupon
+        cupon.generarCodigo()
+        this.cupones << cupon
 
         return cupon
     }
     // Para test
     def crearCuponCanjeado() {
         Cupon cupon = new Cupon(
-            codigoCupon: "4AK2A66",
             descripcionCupon: "Descripcion test 2 del cupon",
-            fechaVencimiento: new Date(),
+            fechaVencimiento: LocalDate.now().plusDays(5),
             estado: 2 // Canjeado
         )
-        cupones << cupon
+        cupon.generarCodigo()
+        this.cupones << cupon
 
         return cupon
     }
     // Para test
     def crearCuponVencido() {
         Cupon cupon = new Cupon(
-            codigoCupon: "4AK6U97",
             descripcionCupon: "Descripcion test 3 del cupon",
-            fechaVencimiento: new Date(),
+            fechaVencimiento:  LocalDate.now(),
             estado: 3 // Vencido
         )
-        cupones << cupon
+        cupon.generarCodigo()
+        this.cupones << cupon
 
         return cupon
     }
 
     def obtenerCupon(String codigoCupon) {
-        return cupones.find{cupon -> cupon.codigoCupon == codigoCupon}
+        return this.cupones.find{cupon -> cupon.codigo == codigoCupon}
     }
 
     def generarEstadisticaPonderacionPorTematica() {
-        return this.detalle.generarEstadisticaPonderacionPorTematica(this.tematicas, this.participantes)
+        return this.estadistica.generarEstadisticaPonderacionPorTematica(this.tematicas, this.participantes)
     }
 
     def generarEstadisticaCuponVigenteVsCanjeado() {
-        return this.detalle.generarEstadisticaCuponVigenteVsCanjeado(this.cupones)
+        return this.estadistica.generarEstadisticaCuponVigenteVsCanjeado(this.cupones)
     }
 
 }
