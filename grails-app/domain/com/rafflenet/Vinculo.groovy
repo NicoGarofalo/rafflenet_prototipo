@@ -13,22 +13,65 @@ class Vinculo {
     }
     
     def vincular(Usuario usuario, Sorteo sorteo) {
-
         this.usuario = usuario
         this.sorteo = sorteo
-        this.miCupon = sorteo.crearCupon()
 
-        //this.tematicasEncomun = matchearTematicas(usuario.tematicas, sorteo.teamticas)
-        if(this.usuario == 0)
+        if(this.usuario.rol == 0)
             participar()
+        
+        this.usuario.misVinculos << this
     }
 
-    def matchearTematicas(Tematicas tematicasUsuario, Tematicas tematicasSorteo) {
-        //hacer
+    // Para test
+    def vincularConCuponCanjeado(Usuario usuario, Sorteo sorteo) {
+        this.usuario = usuario
+        this.sorteo = sorteo
+
+        if(this.usuario.rol == 0)
+            participar()
+
+        this.usuario.misVinculos << this
+    }
+
+    // Para test
+    def vincularConCuponVencido(Usuario usuario, Sorteo sorteo) {
+        this.usuario = usuario
+        this.sorteo = sorteo
+
+        if(this.usuario.rol == 0)
+            participar()
+        
+        this.usuario.misVinculos << this
+    }
+
+    def matchearTematicas() {
+        return this.usuario.tematicasUsuario.intersect(this.sorteo.tematicasSorteo)
     }
     
     def participar() {
         this.sorteo.agregarParticipante(usuario)
+        this.tematicasEncomun = matchearTematicas()
+        this.miCupon = this.sorteo.crearCupon()
+    }
+    // Para test
+    def participarConCuponCanjeado() {
+        this.sorteo.agregarParticipante(usuario)
+        this.tematicasEncomun = matchearTematicas()
+        this.miCupon = this.sorteo.crearCuponCanjeado()
+    }
+    // Para test
+    def participarConCuponVencido() {
+        this.sorteo.agregarParticipante(usuario)
+        this.tematicasEncomun = matchearTematicas()
+        this.miCupon = this.sorteo.crearCuponVencido()
+    }
+
+    def obtenerCantidadVinculos() {
+        return this.misVinculos.size()
+    }
+
+    def obtenerCodigoCupon() {
+        return this.miCupon.codigo
     }
 
     def crearSorteo( String descripPremio, String imgPremio, LocalDate fechaVencimiento, 
@@ -54,7 +97,11 @@ class Vinculo {
         return this.sorteo
     }
 
-    def finalizarSorteo(Sorteo sorteo) {}
+    def finalizarSorteo(Sorteo sorteo) {
+        if (sorteo.estado == 0)
+            return sorteo.finalizar()
+        return null
+    }
 
     def canjearCupon(String codigoCupon) {
         CuponBeneficio cupon = this.sorteo.obtenerCupon(codigoCupon)

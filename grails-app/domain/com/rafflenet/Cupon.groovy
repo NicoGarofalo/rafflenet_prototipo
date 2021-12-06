@@ -2,7 +2,6 @@ package com.rafflenet
 
 class Cupon {
 
-
     String codigoCupon //Aca agregar un = metodoQueGenereCodigoCupon
     String descripcionCupon
     Date fechaVencimiento

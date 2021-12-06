@@ -60,7 +60,41 @@ class Sorteo {
         return participantes.size()
     }
 
-    def crearCupon() {}
+    def crearCupon() {
+        Cupon cupon = new Cupon(
+            codigoCupon: "4AK3L3O",
+            descripcionCupon: "Descripcion test 1 del cupon",
+            fechaVencimiento: new Date(),
+            estado: 1 // Vigente
+        )
+        cupones << cupon
+
+        return cupon
+    }
+    // Para test
+    def crearCuponCanjeado() {
+        Cupon cupon = new Cupon(
+            codigoCupon: "4AK2A66",
+            descripcionCupon: "Descripcion test 2 del cupon",
+            fechaVencimiento: new Date(),
+            estado: 2 // Canjeado
+        )
+        cupones << cupon
+
+        return cupon
+    }
+    // Para test
+    def crearCuponVencido() {
+        Cupon cupon = new Cupon(
+            codigoCupon: "4AK6U97",
+            descripcionCupon: "Descripcion test 3 del cupon",
+            fechaVencimiento: new Date(),
+            estado: 3 // Vencido
+        )
+        cupones << cupon
+
+        return cupon
+    }
 
     def obtenerCupon(String codigoCupon) {
         return cupones.find{cupon -> cupon.codigoCupon == codigoCupon}
