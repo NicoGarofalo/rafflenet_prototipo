@@ -3,6 +3,8 @@ package rafflenet
 class UrlMappings {
 
     static mappings = {
+        "/visualizoUsers"(view: '/index')
+
         "/$controller/$action?/$id?(.$format)?"{
             constraints {
                 // apply constraints here
