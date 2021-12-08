@@ -2,9 +2,14 @@ package com.rafflenet
 
 class Tematica {
 
-    private String nombre
-    private Set<Tematica> tematicasRelacionadas = []
+    String nombre
+    Set<Tematica> tematicasRelacionadas = []
 
     static constraints = {
+        nombre blank: false, nullable: false, unique: true
     }
+
+    def vincular() {}
+
+    def desvincunlar() {}
 }

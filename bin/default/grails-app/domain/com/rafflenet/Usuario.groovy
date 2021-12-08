@@ -2,13 +2,15 @@ package com.rafflenet
 
 class Usuario {
 
-    private String nombre
-    private String constrasenia
-    private String email
-    private String telefono
-    private int rol
-    private Participante participante
-    private Sorteador sorteador
+    String nombre
+    String constrasenia
+    String email
+    String telefono
+    int rol
+    String logoNegocio
+    String nombreRepresentante
+    Set<Tematica> tematicas = []
+    Set<Vinculo> misVinculos = []
 
     static constraints = {
         nombre blank: false, nullable: false
@@ -18,26 +20,16 @@ class Usuario {
         rol nullable: false
     }
 
-    def cambiarRol() {
-        
-        // rol == 0 ? rol = 1 : rol = 0
-
+    def obtenerCantidadVinculos() {
+        return misVinculos.size()
     }
 
-    // def participar() {
-    //     rol == 0 && participante.participar()
-    // }
+    def elegirTematica(Tematica tematica) {
+        this.tematicas << tematica
+    }
 
-    // def elegirTematica() {
-    //     rol == 0 && participante.elegirTematica()
-    // }
+    def eliminarTematica(Tematica tematica) {
 
-    // def eliminarTematica() {
-    //     rol == 0 && participante.eliminarTematica()
-    // }
-
-    // def abandonar() {
-    //     rol == 0 && participante.abandonar()
-    // }
+    }
 
 }

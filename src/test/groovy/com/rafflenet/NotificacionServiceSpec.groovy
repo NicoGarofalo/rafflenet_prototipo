@@ -1,9 +1,9 @@
 package com.rafflenet
 
-import grails.testing.gorm.DomainUnitTest
+import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class DetalleSorteoSpec extends Specification implements DomainUnitTest<DetalleSorteo> {
+class NotificacionServiceSpec extends Specification implements ServiceUnitTest<NotificacionService>{
 
     def setup() {
     }

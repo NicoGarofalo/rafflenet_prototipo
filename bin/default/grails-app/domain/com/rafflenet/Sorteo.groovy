@@ -1,29 +1,35 @@
 package com.rafflenet
 import java.lang.Math
+import java.time.*
 
 class Sorteo {
 
-    private String descripcionPremio
-    private String imagenPremio
-    private int duracionDias
-    private int tipo
-    private Set<Tematica> tematicas = []
-    private Set<CuponBeneficio> cuponesBeneficio = []
-    private Set<Participante> participantes = []
-    private Participante ganadorSorteo
-    private int estado = 0
-    public  DetalleSorteo detalle
+    String descripcionPremio
+    String imagenPremio
+    LocalDate fechaVencimiento
+    int tipo
+    Set<Tematica> tematicas = []
+    Set<Usuario> participantes = []
+    Set<Cupon> cupones = []
+    Usuario ganadorSorteo
+    int estado = 0
+    EstadisticaSorteo estadistica
 
     static constraints = {
         descripcionPremio blank: false, nullable: false
-        duracionDias blank: false, nullable: false
+        imagenPremio blank: false, nullable: false
+        fechaVencimiento blank: false, nullable: false
         tipo blank: false, nullable: false
         tematicas blank: false, nullable: false
-        detalle nullable: false
+        estadistica nullable: false
     }
 
-    def generarGanador() {
-        int rango = this.obtenerCantidadParticipante()
+    def finalizar() {
+        int cantidadParticipantes = this.obtenerCantidadParticipante()
+        if(cantidadParticipantes == 0){
+            return null
+        }
+        int rango = cantidadParticipantes - 1
         int posicionGanador = (int) Math.random() * rango
 
         this.ganadorSorteo = participantes[posicionGanador]
@@ -31,32 +37,75 @@ class Sorteo {
         return participantes[posicionGanador]
     }
 
-
-    //Para tests
-    def setCuponesBeneficio(Set<CuponBeneficio> cupones) {
-        this.cuponesBeneficio = cupones
-    }
-    //Para tests
-    def obtenerCuponesBeneficio(Set<CuponBeneficio> cupones) {
-        return this.cuponesBeneficio
+    def validarFecha(LocalDate fecha) {
+        return fechaVencimiento <= fecha
     }
 
-    def agregarParticipante(Participante participante) {
-        participantes << participante
+    //Para tests
+    def setCupones(Set<Cupon> cupones) {
+        this.cupones = cupones
+    }
+    //Para tests
+    def obtenerCupones(Set<Cupon> cupones) {
+        return this.cupones
+    }
+
+    def agregarParticipante(Usuario participante) {
+        this.participantes << participante
+        this.estadistica.cantVisualizaciones += 1
+        this.estadistica.cantParticipantesActual += 1
     }
 
     def obtenerCantidadParticipante() {
-        return participantes.size()
+        return this.participantes.size()
     }
 
-    def crearCuponBeneficio() {}
+    def crearCupon() {
+        Cupon cupon = new Cupon(
+            descripcionCupon: "Descripcion test 1 del cupon",
+            fechaVencimiento: LocalDate.now().plusDays(5),
+            estado: 1 // Vigente
+        )
+        cupon.generarCodigo()
+        this.cupones << cupon
 
-    def agregarTematica() {}
+        return cupon
+    }
+    // Para test
+    def crearCuponCanjeado() {
+        Cupon cupon = new Cupon(
+            descripcionCupon: "Descripcion test 2 del cupon",
+            fechaVencimiento: LocalDate.now().plusDays(5),
+            estado: 2 // Canjeado
+        )
+        cupon.generarCodigo()
+        this.cupones << cupon
 
-    def eliminarTematica() {}
+        return cupon
+    }
+    // Para test
+    def crearCuponVencido() {
+        Cupon cupon = new Cupon(
+            descripcionCupon: "Descripcion test 3 del cupon",
+            fechaVencimiento:  LocalDate.now(),
+            estado: 3 // Vencido
+        )
+        cupon.generarCodigo()
+        this.cupones << cupon
+
+        return cupon
+    }
 
     def obtenerCupon(String codigoCupon) {
-        return cuponesBeneficio.find{cupon -> cupon.codigoCupon == codigoCupon}
+        return this.cupones.find{cupon -> cupon.codigo == codigoCupon}
+    }
+
+    def generarEstadisticaPonderacionPorTematica() {
+        return this.estadistica.generarEstadisticaPonderacionPorTematica(this.tematicas, this.participantes)
+    }
+
+    def generarEstadisticaCuponVigenteVsCanjeado() {
+        return this.estadistica.generarEstadisticaCuponVigenteVsCanjeado(this.cupones)
     }
 
 }

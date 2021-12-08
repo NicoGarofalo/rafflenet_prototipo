@@ -101,7 +101,6 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
             vinculo5.vincular(p5, sorteoCreado)
 
             vinculoSorteador.sorteo.estadistica.cantVisualizaciones = 15 //hardcodeo cant visualizaciones
-            vinculoSorteador.finalizarSorteo()//Esto finaliza sorteo
         when:
             int resultados = vinculoSorteador.sorteo.estadistica.generarEstadisticaParticipanteVsVisualizaciones()
         then:
@@ -183,8 +182,7 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
             vinculo2.vincular(p2, sorteoCreado)
             Vinculo vinculo3 = new Vinculo()
             vinculo3.vincular(p3, sorteoCreado)
-
-            vinculoSorteador.finalizarSorteo()//Esto finaliza sorteo
+            vinculoSorteador.finalizarSorteo()
 
         when:
             Map resultados = vinculoSorteador.sorteo.generarEstadisticaPonderacionPorTematica()
