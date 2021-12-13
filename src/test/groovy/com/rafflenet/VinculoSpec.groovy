@@ -27,7 +27,7 @@ class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
             constrasenia: '1234hola',
             email: 'fulanito@correoElectronico.com',
             telefono: '115584993',
-            rol: 0
+            rol: Rol.PARTICIPANTE
         )
 
         given:
@@ -43,11 +43,12 @@ class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
                 tipo: 0,
                 tematicas: "TematicaTest1",
                 ganadorSorteo: "",
-                estadistica: nuevaEstadistica
+                estadistica: nuevaEstadistica,
+                fechaVencimiento: LocalDate.now().plusDays(10)
             )
         when:
-            Vinculo vinculoParticipante = new Vinculo()
-            vinculoParticipante.vincular(participante,sorteoCreado)
+            Vinculo vinculoParticipante = new Vinculo(participante,sorteoCreado)
+            vinculoParticipante.vincular()
             participante.misVinculos << vinculoParticipante
         then:
             sorteoCreado.obtenerCantidadParticipante().equals(1)
@@ -72,7 +73,7 @@ class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
             constrasenia: '1234hola',
             email: 'fulanito@correoElectronico.com',
             telefono: '115584993',
-            rol: 1
+            rol: Rol.SORTEADOR
         )
         given: 
             String descripPremio = "PremioTest1"
@@ -88,11 +89,11 @@ class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
             Set<Tematica> tematicas = [tematica1]
         
         when:
-            Vinculo vinculoSorteador = new Vinculo()
-
-            Sorteo sorteoCreado = vinculoSorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, tematicas,
+            Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, tematicas,
             limiteParticipante, descripSorteo)
-            vinculoSorteador.vincular(sorteador, sorteoCreado)
+
+            Vinculo vinculoSorteador = new Vinculo(sorteador, sorteoCreado)
+            vinculoSorteador.vincular()
 
         then:
             descripPremio.equals(sorteoCreado.descripcionPremio)
@@ -142,24 +143,31 @@ class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
         Set<Tematica> tematicas = [tematica1]
 
         //Crear sorteo y agregarlo al sorteador
-        Vinculo vinculoSorteador = new Vinculo()
-        Sorteo sorteoCreado = vinculoSorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
+        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
         tematicas, limiteParticipante, descripSorteo)
-        vinculoSorteador.vincular(sorteador, sorteoCreado)
+
+        Vinculo vinculoSorteador = new Vinculo(sorteador, sorteoCreado)
+        vinculoSorteador.vincular()
 
         //Crear participacion y agregarla al participante
-        Vinculo vinculoParticipante = new Vinculo()
-        vinculoParticipante.vincular(participante, sorteoCreado)
+        Vinculo vinculoParticipante = new Vinculo(participante, sorteoCreado)
+        vinculoParticipante.vincular()
+        participante.misVinculos << vinculoParticipante
 
         given:
             vinculoSorteador.finalizarSorteo()
         when:
             String codigoCupon = vinculoParticipante.obtenerCodigoCupon()
-            String mensajeCupon = vinculoSorteador.canjearCupon(codigoCupon)
+            def check = false
+            EstadoCupon estado = null
+            try{
+                estado = vinculoSorteador.canjearCupon(codigoCupon)
+            } catch(Exception e) {
+                check = true
+            }
         then:
-            mensajeCupon.equals("Cupon canjeado exitosamente")
-            Set<Cupon> cuponesSorteo = sorteoCreado.obtenerCupones()
-            cuponesSorteo[0].obtenerEstado().equals(2)
+            check == false //No debio entrar al catch, si = true funciona mal
+            estado == EstadoCupon.CANJEADO
     }
 
     // Dado que el sorteador ingresa un código de cupón único en estado Vencido
@@ -199,23 +207,35 @@ class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
         Set<Tematica> tematicas = [tematica1]
 
         //Crear sorteo y agregarlo al sorteador
-        Vinculo vinculoSorteador = new Vinculo()
-        Sorteo sorteoCreado = vinculoSorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
+        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
         tematicas, limiteParticipante, descripSorteo)
-        vinculoSorteador.vincular(sorteador, sorteoCreado)
+
+        Vinculo vinculoSorteador = new Vinculo(sorteador, sorteoCreado)
+        vinculoSorteador.vincular()
 
         //Crear participacion y agregarla al participante
-        Vinculo vinculoParticipante = new Vinculo()
-        vinculoParticipante.vincularConCuponVencido(participante, sorteoCreado)
+        Vinculo vinculoParticipante = new Vinculo(participante, sorteoCreado)
+        vinculoParticipante.vincular()
+        participante.misVinculos << vinculoParticipante
+
+        //Hardcodeo para test
+        vinculoParticipante.miCupon.estado = EstadoCupon.VENCIDO
 
         given:
             vinculoSorteador.finalizarSorteo()
         when:
             String codigoCupon = vinculoParticipante.obtenerCodigoCupon()
-            String mensajeCupon = vinculoSorteador.canjearCupon(codigoCupon)
+            def check = false
+            EstadoCupon estado = null
+            try{
+                estado = vinculoSorteador.canjearCupon(codigoCupon)
+            } catch(Exception e) {
+                if(e.message == "Cupon vencido") check = true
+            }
         then:
-            mensajeCupon.equals('Cupon vencido')
-            vinculoParticipante.miCupon.obtenerEstado().equals(3)
+            check == true
+            estado == null
+            vinculoParticipante.miCupon.estado.equals(EstadoCupon.VENCIDO)
     }
 
 
@@ -257,24 +277,35 @@ class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
         Set<Tematica> tematicas = [tematica1]
 
         //Crear sorteo y agregarlo al sorteador
-        Vinculo vinculoSorteador = new Vinculo()
-        Sorteo sorteoCreado = vinculoSorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
+        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
         tematicas, limiteParticipante, descripSorteo)
-        vinculoSorteador.vincular(sorteador, sorteoCreado)
+
+        Vinculo vinculoSorteador = new Vinculo(sorteador, sorteoCreado)
+        vinculoSorteador.vincular()
 
         //Crear participacion y agregarla al participante
-        Vinculo nuevoVinculo = new Vinculo()
-        nuevoVinculo.vincularConCuponCanjeado(participante, sorteoCreado)
+        Vinculo vinculoParticipante = new Vinculo(participante, sorteoCreado)
+        vinculoParticipante.vincular()
+        participante.misVinculos << vinculoParticipante
+
+        //Crear cupon y cambiar estado (para el test nomas)
+        vinculoParticipante.miCupon.estado = EstadoCupon.CANJEADO
 
         given:
             vinculoSorteador.finalizarSorteo()
         when:
-            String codigoCupon = nuevoVinculo.obtenerCodigoCupon()
-            String mensajeCupon = vinculoSorteador.canjearCupon(codigoCupon)
+            String codigoCupon = vinculoParticipante.obtenerCodigoCupon()
+            def check = false
+            EstadoCupon estado = null
+            try{
+                vinculoParticipante.canjearCupon(codigoCupon)
+            } catch (Exception e){
+                if (e.message == "Cupon ya canjeado") check = true
+            }
         then:
-            mensajeCupon.equals("Cupon ya canjeado")
-            Set<Cupon> cuponesSorteo = sorteoCreado.obtenerCupones()
-            cuponesSorteo[0].obtenerEstado().equals(2)
+            check == true
+            estado == null
+            vinculoParticipante.miCupon.estado.equals(EstadoCupon.CANJEADO)
     }
 
 
@@ -315,21 +346,30 @@ class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
         Set<Tematica> tematicas = [tematica1]
 
         //Crear sorteo y agregarlo al sorteador
-        Vinculo vinculoSorteador = new Vinculo()
-        Sorteo sorteoCreado = vinculoSorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
+        Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
         tematicas, limiteParticipante, descripSorteo)
-        vinculoSorteador.vincular(sorteador, sorteoCreado)
+
+        Vinculo vinculoSorteador = new Vinculo(sorteador, sorteoCreado)
+        vinculoSorteador.vincular()
 
         //Crear participacion y agregarla al participante
-        Vinculo nuevoVinculo = new Vinculo()
-        nuevoVinculo.vincular(participante, sorteoCreado)
+        Vinculo vinculoParticipante = new Vinculo(participante, sorteoCreado)
+        vinculoParticipante.vincular()
+        participante.misVinculos << vinculoParticipante
 
         given:
             vinculoSorteador.finalizarSorteo()
         when:
-            String mensajeCupon = vinculoSorteador.canjearCupon("4AK3V12")
+            def check = false
+            EstadoCupon estado = null
+            try{
+                vinculoSorteador.canjearCupon("4AK3V12")
+            } catch (Exception e){
+                if (e.message == "Cupon no encontrado") check = true
+            }
         then:
-            mensajeCupon.equals('Cupon no encontrado')
+            check == true
+            estado == null
     }
 
 
@@ -342,7 +382,8 @@ class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
     // Entonces la aplicación sortea automáticamente y le notifica al sorteador cuál es
     // el ganador obtenido, y finaliza el sorteo
 
-
+    //QUARTZ - Chequear posible plugin grails
+    //Boton que simule
     void "Test Sorteador - Sorteo automático de ganador" () {
         
         // Crear sorteador y participante
@@ -376,14 +417,16 @@ class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
 
         given:
             //Crear sorteo y agregarlo al sorteador
-            Vinculo vinculoSorteador = new Vinculo()
-            Sorteo sorteoCreado = vinculoSorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
+            Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
             tematicas, limiteParticipante, descripSorteo)
-            vinculoSorteador.vincular(sorteador, sorteoCreado)
+
+            Vinculo vinculoSorteador = new Vinculo(sorteador, sorteoCreado)
+            vinculoSorteador.vincular()
 
             //Crear participacion y agregarla al participante
-            Vinculo nuevoVinculo = new Vinculo()
-            nuevoVinculo.vincular(participante, sorteoCreado)
+            Vinculo vinculoParticipante = new Vinculo(participante, sorteoCreado)
+            vinculoParticipante.vincular()
+            participante.misVinculos << vinculoParticipante
 
         when:
             LocalDate fechaSimuladaVencimiento = LocalDate.now().plusDays(10)
@@ -391,8 +434,8 @@ class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
             Usuario ganador = vinculoSorteador.finalizarSorteo()
         then:
             vencioSorteo == true //El sorteo venció (en base a fechas)
-            ganador != null //Obtengo ganador valido
-            vinculoSorteador.sorteo.estado.equals(1)//Finalizado
+            ganador != null //Obtengo ganador valido 
+            vinculoSorteador.sorteo.estado == EstadoSorteo.FINALIZADO//Finalizado
     }
 
 }

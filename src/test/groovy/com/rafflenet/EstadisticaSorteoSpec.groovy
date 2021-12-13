@@ -83,22 +83,24 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
 
         given:
             //Crear sorteo y agregarlo al sorteador
-            Vinculo vinculoSorteador = new Vinculo()
-            Sorteo sorteoCreado = vinculoSorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
+            Sorteo sorteoCreado = sorteador.crearSorteo(descripPremio, imgPremio, fechaVencimiento, tipo, 
             tematicas, limiteParticipante, descripSorteo)
-            vinculoSorteador.vincular(sorteador, sorteoCreado)
+
+            Vinculo vinculoSorteador = new Vinculo(sorteador, sorteoCreado)
+            vinculoSorteador.vincular()
 
             //Crear participacion y agregarla al participante
-            Vinculo vinculo1 = new Vinculo()
-            vinculo1.vincular(p1, sorteoCreado)
-            Vinculo vinculo2 = new Vinculo()
-            vinculo2.vincular(p2, sorteoCreado)
-            Vinculo vinculo3 = new Vinculo()
-            vinculo3.vincular(p3, sorteoCreado)
-            Vinculo vinculo4 = new Vinculo()
-            vinculo4.vincular(p4, sorteoCreado)
-            Vinculo vinculo5 = new Vinculo()
-            vinculo5.vincular(p5, sorteoCreado)
+            Vinculo vinculo1 = new Vinculo(p1, sorteoCreado)
+            Vinculo vinculo2 = new Vinculo(p2, sorteoCreado)
+            Vinculo vinculo3 = new Vinculo(p3, sorteoCreado)
+            Vinculo vinculo4 = new Vinculo(p4, sorteoCreado)
+            Vinculo vinculo5 = new Vinculo(p5, sorteoCreado)
+
+            vinculo1.vincular()
+            vinculo2.vincular()
+            vinculo3.vincular()
+            vinculo4.vincular()
+            vinculo5.vincular()
 
             vinculoSorteador.sorteo.estadistica.cantVisualizaciones = 15 //hardcodeo cant visualizaciones
             vinculoSorteador.finalizarSorteo()//Esto finaliza sorteo
@@ -164,8 +166,7 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
         p3.elegirTematica(tematica1)
 
         given:
-            Vinculo vinculoSorteador = new Vinculo()
-            Sorteo sorteoCreado = vinculoSorteador.crearSorteo(
+            Sorteo sorteoCreado = sorteador.crearSorteo(
                 "DescripcionPremio1", 
                 "ImgPremio1",
                 LocalDate.now(), 
@@ -174,15 +175,18 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
                 150,
                 "Sorteo interesante Test1"
             )
-            vinculoSorteador.vincular(sorteador, sorteoCreado)
+
+            Vinculo vinculoSorteador = new Vinculo(sorteador, sorteoCreado)
+            vinculoSorteador.vincular()
             
             //Crear vinculos y agregarla al participante
-            Vinculo vinculo1 = new Vinculo()
-            vinculo1.vincular(p1, sorteoCreado)
-            Vinculo vinculo2 = new Vinculo()
-            vinculo2.vincular(p2, sorteoCreado)
-            Vinculo vinculo3 = new Vinculo()
-            vinculo3.vincular(p3, sorteoCreado)
+            Vinculo vinculo1 = new Vinculo(p1, sorteoCreado)
+            Vinculo vinculo2 = new Vinculo(p2, sorteoCreado)
+            Vinculo vinculo3 = new Vinculo(p3, sorteoCreado)
+            
+            vinculo1.vincular()
+            vinculo2.vincular()
+            vinculo3.vincular()
 
             vinculoSorteador.finalizarSorteo()//Esto finaliza sorteo
 
@@ -252,8 +256,7 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
         )
         Set<Tematica> tematicasSorteo = [tematica1]
 
-        Vinculo vinculoSorteador = new Vinculo()
-        Sorteo sorteoCreado = vinculoSorteador.crearSorteo(
+        Sorteo sorteoCreado = sorteador.crearSorteo(
             "DescripcionPremio1", 
             "ImgPremio1",
             LocalDate.now(), 
@@ -262,20 +265,23 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
             150,
             "Sorteo interesante Test1"
         )
-        vinculoSorteador.vincular(sorteador, sorteoCreado)
+
+        Vinculo vinculoSorteador = new Vinculo(sorteador, sorteoCreado)
+        vinculoSorteador.vincular()
 
 
         //Crear vinculos y agregarla al participante
-        Vinculo vinculo1 = new Vinculo()
-        vinculo1.vincular(p1, sorteoCreado)
-        Vinculo vinculo2 = new Vinculo()
-        vinculo2.vincular(p2, sorteoCreado)
-        Vinculo vinculo3 = new Vinculo()
-        vinculo3.vincular(p3, sorteoCreado)
-        Vinculo vinculo4 = new Vinculo()
-        vinculo4.vincular(p4, sorteoCreado)
-        Vinculo vinculo5 = new Vinculo()
-        vinculo5.vincular(p5, sorteoCreado)
+        Vinculo vinculo1 = new Vinculo(p1, sorteoCreado)
+        Vinculo vinculo2 = new Vinculo(p2, sorteoCreado)
+        Vinculo vinculo3 = new Vinculo(p3, sorteoCreado)
+        Vinculo vinculo4 = new Vinculo(p4, sorteoCreado)
+        Vinculo vinculo5 = new Vinculo(p5, sorteoCreado)
+
+        vinculo1.vincular()
+        vinculo2.vincular()
+        vinculo3.vincular()
+        vinculo4.vincular()
+        vinculo5.vincular()
 
         given:
             vinculoSorteador.finalizarSorteo()//Esto finaliza sorteo
@@ -286,13 +292,18 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
             String codigo3 = vinculo3.obtenerCodigoCupon()
             String codigo4 = vinculo4.obtenerCodigoCupon()
 
-            vinculoSorteador.canjearCupon(codigo1)
-            vinculoSorteador.canjearCupon(codigo2)
-            vinculoSorteador.canjearCupon(codigo3)
-            vinculoSorteador.canjearCupon(codigo4)
+            EstadoCupon estado1 = vinculo1.canjearCupon(codigo1)
+            EstadoCupon estado2 = vinculo2.canjearCupon(codigo2)
+            EstadoCupon estado3 = vinculo3.canjearCupon(codigo3)
+            EstadoCupon estado4 = vinculo4.canjearCupon(codigo4)
 
             Map resultados = vinculoSorteador.sorteo.generarEstadisticaCuponVigenteVsCanjeado()
         then:
+            estado1 == EstadoCupon.CANJEADO
+            estado2 == EstadoCupon.CANJEADO
+            estado3 == EstadoCupon.CANJEADO
+            estado4 == EstadoCupon.CANJEADO
+            
             resultados['Vigentes'] == 20
             resultados['Canjeados'] == 80
     }

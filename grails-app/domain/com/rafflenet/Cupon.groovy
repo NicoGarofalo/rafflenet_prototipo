@@ -7,7 +7,7 @@ class Cupon {
     String codigo = ""
     String descripcion
     LocalDate fechaVencimiento
-    int estado = 1 //Ver esto con el profe si se mantiene No Vigente cambiar a 0
+    EstadoCupon estado = EstadoCupon.VIGENTE //Ver esto con el profe si se mantiene No Vigente cambiar a 0
 
     static constraints = {
     }
@@ -36,25 +36,25 @@ class Cupon {
 
     def verificarVencimiento () {
         LocalDate fechaHoy = LocalDate.now()
-        if((this.fechaVencimiento < fechaHoy) && (this.estado == 1)) {
+        if((this.fechaVencimiento < fechaHoy) && (this.estado == EstadoCupon.VIGENTE)) {
             caducar()
             return true
         }
-        if(this.estado == 3) return true
+        if(this.estado == EstadoCupon.VENCIDO) return true
         return false
     }
 
     def estaCanjeado () {
-        return this.estado == 2
+        return this.estado == EstadoCupon.CANJEADO
     }
 
     def caducar() {
-        this.estado = 3
+        this.estado = EstadoCupon.VENCIDO
     }
 
     def canjear() {
-        if(this.estado != 1) return false
-        this.estado = 2
+        if(this.estado != EstadoCupon.VIGENTE) return false
+        this.estado = EstadoCupon.CANJEADO
         return true
     }
 }

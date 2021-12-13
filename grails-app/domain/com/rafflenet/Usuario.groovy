@@ -1,12 +1,14 @@
 package com.rafflenet
 
-class Usuario {
+import java.time.*
+
+class Usuario {    
 
     String nombre
     String constrasenia
     String email
+    Rol rol
     String telefono
-    int rol
     String logoNegocio
     String nombreRepresentante
     Set<Tematica> tematicas = []
@@ -17,7 +19,6 @@ class Usuario {
         constrasenia blank: false, nullable: false
         email email: true, blank: false, nullable: false, unique: true
         telefono blank: false, nullable: false, unique: true
-        rol nullable: false
     }
 
     def obtenerCantidadVinculos() {
@@ -30,6 +31,33 @@ class Usuario {
 
     def eliminarTematica(Tematica tematica) {
 
+    }
+
+
+    def crearSorteo( String descripPremio, String imgPremio, LocalDate fechaVencimiento, 
+    int tipo, Set<Tematica> tematicas,int limiteParticipante, String descripSorteo) {
+
+        if(this.rol == Rol.PARTICIPANTE) {
+            throw new Exception("El usuario no es sorteador.")
+        }
+
+        EstadisticaSorteo nuevaEstadistica = new EstadisticaSorteo(
+            limiteParticipante: limiteParticipante,
+            descripcion: descripSorteo
+        )
+
+        Sorteo sorteo = new Sorteo(
+            descripcionPremio: descripPremio,
+            imagenPremio: imgPremio,
+            tipo: tipo,
+            tematicas: tematicas,
+            participantes: [],
+            ganadorSorteo: "",
+            fechaVencimiento: fechaVencimiento,
+            estadistica: nuevaEstadistica
+        )
+
+        return sorteo
     }
 
 }

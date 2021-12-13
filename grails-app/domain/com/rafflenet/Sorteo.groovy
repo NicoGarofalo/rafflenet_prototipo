@@ -12,16 +12,18 @@ class Sorteo {
     Set<Usuario> participantes = []
     Set<Cupon> cupones = []
     Usuario ganadorSorteo
-    int estado = 0
+    EstadoSorteo estado = EstadoSorteo.VIGENTE
     EstadisticaSorteo estadistica
 
+    //Coment: CAmbiar nullable true a false en la imagen cuando ya tengamos imagenes paraponer
     static constraints = {
         descripcionPremio blank: false, nullable: false
-        imagenPremio blank: false, nullable: false
+        imagenPremio blank: false, nullable: true
         fechaVencimiento blank: false, nullable: false
         tipo blank: false, nullable: false
         tematicas blank: false, nullable: false
         estadistica nullable: false
+        ganadorSorteo nullable: true
     }
 
     def finalizar() {
@@ -33,7 +35,8 @@ class Sorteo {
         int posicionGanador = (int) Math.random() * rango
 
         this.ganadorSorteo = participantes[posicionGanador]
-        this.estado = 1 
+        this.estado = EstadoSorteo.FINALIZADO
+        
         return participantes[posicionGanador]
     }
 
@@ -63,7 +66,7 @@ class Sorteo {
     def crearCupon() {
         Cupon cupon = new Cupon(
             descripcionCupon: "Descripcion test 1 del cupon",
-            fechaVencimiento: LocalDate.now().plusDays(5),
+            fechaVencimiento: fechaVencimiento.plusDays(10),
             estado: 1 // Vigente
         )
         cupon.generarCodigo()
@@ -75,7 +78,7 @@ class Sorteo {
     def crearCuponCanjeado() {
         Cupon cupon = new Cupon(
             descripcionCupon: "Descripcion test 2 del cupon",
-            fechaVencimiento: LocalDate.now().plusDays(5),
+            fechaVencimiento: fechaVencimiento.plusDays(5),
             estado: 2 // Canjeado
         )
         cupon.generarCodigo()
