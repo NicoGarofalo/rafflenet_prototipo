@@ -49,7 +49,7 @@ class Vinculo {
     def canjearCupon(String codigoCupon) {
         Cupon cupon = this.sorteo.obtenerCupon(codigoCupon)
 
-        if(!cupon)  throw new Exception("Cupon no encontrado")
+        if (!cupon)  throw new Exception("Cupon no encontrado")
         if (cupon.verificarVencimiento()) throw new Exception("Cupon vencido") 
         if (cupon.estaCanjeado()) throw new Exception("Cupon ya canjeado")
         if (cupon.canjear()) return EstadoCupon.CANJEADO

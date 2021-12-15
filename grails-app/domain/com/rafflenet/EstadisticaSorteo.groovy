@@ -40,9 +40,9 @@ class EstadisticaSorteo {
         def estadoCupones = ["Vigentes":0,"Canjeados":0]
 
         for (c in cupones) {
-            if (c.estado == 2)
+            if (c.estaCanjeado())
                 estadoCupones["Canjeados"] += 1
-            if (c.estado == 1)
+            if (c.estaVigente())
                 estadoCupones["Vigentes"] += 1
         }
         

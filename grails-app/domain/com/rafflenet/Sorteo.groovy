@@ -104,10 +104,16 @@ class Sorteo {
     }
 
     def generarEstadisticaPonderacionPorTematica() {
+        if(this.estado != EstadoSorteo.FINALIZADO){
+            throw new Exception("El sorteo no finalizó")
+        }
         return this.estadistica.generarEstadisticaPonderacionPorTematica(this.tematicas, this.participantes)
     }
 
     def generarEstadisticaCuponVigenteVsCanjeado() {
+        if(this.estado != EstadoSorteo.FINALIZADO){
+            throw new Exception("El sorteo no finalizó")
+        }
         return this.estadistica.generarEstadisticaCuponVigenteVsCanjeado(this.cupones)
     }
 

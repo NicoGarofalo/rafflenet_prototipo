@@ -292,10 +292,20 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
             String codigo3 = vinculo3.obtenerCodigoCupon()
             String codigo4 = vinculo4.obtenerCodigoCupon()
 
+            println "pre canje"
+            for (c in vinculoSorteador.sorteo.cupones){
+                println c.dump()
+            }
+
             EstadoCupon estado1 = vinculo1.canjearCupon(codigo1)
             EstadoCupon estado2 = vinculo2.canjearCupon(codigo2)
             EstadoCupon estado3 = vinculo3.canjearCupon(codigo3)
             EstadoCupon estado4 = vinculo4.canjearCupon(codigo4)
+
+            println "Post canje"
+            for (c in vinculoSorteador.sorteo.cupones){
+                println c.dump()
+            }
 
             Map resultados = vinculoSorteador.sorteo.generarEstadisticaCuponVigenteVsCanjeado()
         then:

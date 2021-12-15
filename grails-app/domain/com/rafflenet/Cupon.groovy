@@ -48,13 +48,19 @@ class Cupon {
         return this.estado == EstadoCupon.CANJEADO
     }
 
+    def estaVigente () {
+        return this.estado == EstadoCupon.VIGENTE
+    }
+
     def caducar() {
         this.estado = EstadoCupon.VENCIDO
     }
 
     def canjear() {
-        if(this.estado != EstadoCupon.VIGENTE) return false
-        this.estado = EstadoCupon.CANJEADO
-        return true
+        if(this.estado == EstadoCupon.VIGENTE){
+            this.estado = EstadoCupon.CANJEADO
+            return true
+        }
+        return false
     }
 }
