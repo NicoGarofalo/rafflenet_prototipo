@@ -16,7 +16,7 @@
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark navbar-static-top" role="navigation">
+<%-- <nav class="navbar navbar-expand-lg navbar-dark navbar-static-top" role="navigation">
     <a class="navbar-brand" href="/#"><asset:image height='15%' width='15%' src="rafflenet_logo.png" alt="RaffleNet Logo"/></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -28,11 +28,11 @@
         </ul>
     </div>
 
-</nav>
+</nav> --%>
 
 <g:layoutBody/>
 
-<div class="footer row" role="contentinfo">
+<%-- <div class="footer row" role="contentinfo">
     <div class="col">
         <a href="http://guides.grails.org" target="_blank">
             <asset:image src="advancedgrails.svg" alt="Grails Guides" class="float-left"/>
@@ -62,7 +62,7 @@
 
 <div id="spinner" class="spinner" style="display:none;">
     <g:message code="spinner.alt" default="Loading&hellip;"/>
-</div>
+</div> --%>
 
 <asset:javascript src="application.js"/>
 
