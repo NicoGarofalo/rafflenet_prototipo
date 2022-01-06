@@ -44,15 +44,6 @@ class Sorteo {
         return fechaVencimiento <= fecha
     }
 
-    //Para tests
-    def setCupones(Set<Cupon> cupones) {
-        this.cupones = cupones
-    }
-    //Para tests
-    def obtenerCupones(Set<Cupon> cupones) {
-        return this.cupones
-    }
-
     def agregarParticipante(Usuario participante) {
         this.participantes << participante
         this.estadistica.cantVisualizaciones += 1
@@ -68,30 +59,6 @@ class Sorteo {
             descripcionCupon: "Descripcion test 1 del cupon",
             fechaVencimiento: fechaVencimiento.plusDays(10),
             estado: 1 // Vigente
-        )
-        cupon.generarCodigo()
-        this.cupones << cupon
-
-        return cupon
-    }
-    // Para test
-    def crearCuponCanjeado() {
-        Cupon cupon = new Cupon(
-            descripcionCupon: "Descripcion test 2 del cupon",
-            fechaVencimiento: fechaVencimiento.plusDays(5),
-            estado: 2 // Canjeado
-        )
-        cupon.generarCodigo()
-        this.cupones << cupon
-
-        return cupon
-    }
-    // Para test
-    def crearCuponVencido() {
-        Cupon cupon = new Cupon(
-            descripcionCupon: "Descripcion test 3 del cupon",
-            fechaVencimiento:  LocalDate.now(),
-            estado: 3 // Vencido
         )
         cupon.generarCodigo()
         this.cupones << cupon

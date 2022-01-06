@@ -292,7 +292,6 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
             String codigo3 = vinculo3.obtenerCodigoCupon()
             String codigo4 = vinculo4.obtenerCodigoCupon()
 
-            println "pre canje"
             for (c in vinculoSorteador.sorteo.cupones){
                 println c.dump()
             }
@@ -302,7 +301,6 @@ class EstadisticaSorteoSpec extends Specification implements DomainUnitTest<Esta
             EstadoCupon estado3 = vinculo3.canjearCupon(codigo3)
             EstadoCupon estado4 = vinculo4.canjearCupon(codigo4)
 
-            println "Post canje"
             for (c in vinculoSorteador.sorteo.cupones){
                 println c.dump()
             }
