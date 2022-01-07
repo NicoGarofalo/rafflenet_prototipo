@@ -4,7 +4,7 @@ class UrlMappings {
 
     static mappings = {
         "/participante/home"(view: '/index')
-        "/sorteador/home"(view: '/sorteo/index')
+        "/sorteador/home"(controller: 'sorteo')
         "/login"(view: '/index')
         "/register"(view: '/index')
 

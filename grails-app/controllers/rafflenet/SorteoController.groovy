@@ -1,4 +1,4 @@
-package rafflenet
+package com.rafflenet
 
 class SorteoController {
 
