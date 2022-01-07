@@ -1,8 +1,85 @@
-.body {
-    height: 100%;
-}
 
 
 .sidebar {  
-    float: left;
+    position: fixed;
+    top:0;
+    height: 100%;
 }
+
+.raffleContent {
+  margin-left: 310px;
+  margin-top: 4%;
+} 
+
+
+/* body{
+	font-family: 'Poppins',Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.8;
+	font-weight: normal;
+	background: #fff;
+}
+a {
+	transition: .3s all ease;
+	color: #2f89fc;
+
+}
+button {
+	transition: .3s all ease;
+
+}
+h1, h2, h3, h4, h5,
+.h1, .h2, .h3, .h4, .h5 {
+	line-height: 1.5;
+	font-weight: 400;
+	font-family: 'Poppins',Arial, sans-serif;
+}
+
+
+.img{
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+
+.wrapper {
+  width: 100%;
+}
+
+#sidebar {
+  min-width: 300px;
+  max-width: 300px;
+  background: #32373d;
+  color: #fff;
+  transition: all 0.3s;
+  position: relative;
+  }
+  h1{
+  	margin-bottom: 20px;
+  	font-weight: 700;
+  	font-size: 20px;
+  }
+  ul.components{
+  	padding: 0;
+  }
+
+
+  .custom-menu{
+		display: inline-block;
+		position: absolute;
+		top: 20px;
+		right: 0;
+		margin-right: -35px;
+
+  }
+
+
+
+#content {
+  width: 100%;
+  padding: 0;
+  min-height: 100vh;
+  transition: all 0.3s;
+} */
+

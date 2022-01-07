@@ -1,86 +1,62 @@
 <!doctype html>
-<html>
+<html style="height: 100%;">
     <head>
         <meta name="layout" content="main"/>
         <title>Mirko manco</title>
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
     </head>
-    <body >
-        <div id="content" >
-            <div class="sidebar" style="height: 100%;">
-                <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+    <body style="min-height: 100%;">
+        <div class="content" >
+            <div class="sidebar">
+                <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; height: 100vh;">
                     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-                    <span class="fs-4">Sidebar</span>
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXBkFUDdOrf9y01ww3Y6pkOx5RUdoIdNVa3g&usqp=CAU" alt="" width="32" height="32"">
                     </a>
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
                         <a href="#" class="nav-link active" aria-current="page">
                         <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-                        Home
+                        Participar
                         </a>
                     </li>
                     <li>
                         <a href="#" class="nav-link text-white">
                         <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-                        Dashboard
+                        Mis Sorteos
                         </a>
                     </li>
                     <li>
                         <a href="#" class="nav-link text-white">
                         <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                        Orders
+                        Mis Cupones
                         </a>
                     </li>
                     <li>
                         <a href="#" class="nav-link text-white">
                         <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                        Products
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                        <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                        Customers
+                        Cerrar Sesion
                         </a>
                     </li>
                     </ul>
                     <hr>
                     <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                            <strong>mdo</strong>
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXBkFUDdOrf9y01ww3Y6pkOx5RUdoIdNVa3g&usqp=CAU" alt="" width="32" height="32" class="rounded-circle me-2">
+                            <strong style="padding-left: 8px;">Participante</strong>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="#">New project...</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Sign out</a></li>
-                        </ul>
                     </div>
                 </div>
             </div>
-            <div id="maincontent" style="margin-left:280px">
+            <div class="raffleContent" id="maincontent" style="margin-left:310px;">
                 <section>
-                    <h1>Home</h1>
-                    <div class="card mb-3">
+                    <h2>Sorteos</h2>
+                    <div class="card" style="width: 25rem;">
+                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXBkFUDdOrf9y01ww3Y6pkOx5RUdoIdNVa3g&usqp=CAU" alt="Card image cap">
                         <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>  
-
-                    <div >
-                        <div class="card mb-3">
-                            <%-- <img src="..." class="card-img-top" alt="..."> --%>
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
+                            <h5 class="card-title" style="text-align: center;"><strong>Sorteo Microsoft Surface Pro Versión 2021</strong></h5>
+                            <p class="card-text"  style="text-align: center;">Premio Microsoft Surface Pro Storage Drive 256GB SSD i5-8250U 160GHz ..</p>
+                            <a href="#">más detalles...</a>
                         </div>
                     </div>
                 </section>
