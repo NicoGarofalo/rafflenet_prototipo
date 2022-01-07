@@ -3,7 +3,7 @@ package rafflenet
 class UrlMappings {
 
     static mappings = {
-        "/participante/home"(view: '/index')
+        "/participante/home"(controller: 'participante')
         "/sorteador/home"(controller: 'sorteo')
         "/login"(view: '/index')
         "/register"(view: '/index')

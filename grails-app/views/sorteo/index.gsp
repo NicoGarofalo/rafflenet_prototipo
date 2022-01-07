@@ -6,14 +6,14 @@
         
         ${sorteos}
 
-        <div class="cardStack--cards">
+        <%-- <div class="cardStack--cards">
             <g:each in="${sorteos}" var="sorteo">
                 <div class="cardStack--card">
                     <h3>${sorteo.estadistica.descripcion}</h3>
                     <p>${sorteo.descripcionPremio}</p>
                 </div>
             </g:each>
-        </div>
+        </div> --%>
     
     </body>
 
