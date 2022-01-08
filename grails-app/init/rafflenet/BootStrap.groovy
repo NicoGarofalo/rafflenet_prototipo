@@ -30,6 +30,23 @@ class BootStrap {
             estadistica: nuevaEstadistica
         ).save(failOnError: true)
 
+
+
+        EstadisticaSorteo nuevaEstadistica1 = new EstadisticaSorteo(
+            limiteParticipante: 20,
+            descripcion: "Esta es la descripcion del mejor sorteo del mundo"
+        ).save(failOnError: true)
+
+        Sorteo sorteo2 = new Sorteo(
+            descripcionPremio: "Microsoft Surface Pro",
+            imagenPremio: "",
+            tipo: 0,
+            participantes: [],
+            ganadorSorteo: "",
+            fechaVencimiento: LocalDate.now().plusDays(10),
+            estadistica: nuevaEstadistica1
+        ).save(failOnError: true)
+
         println "Inicializando..."
     }
 
