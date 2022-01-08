@@ -36,24 +36,28 @@
             <!-- Page Content  -->
             <div id="content" class="p-4 p-md-5 pt-5">
                 <div style="align-items: center; justify-content: center;">
-                    <g:each in="${sorteos}" var="sorteo">
+                    <g:each in="${sorteoActual}" var="sorteo">
                         <div class="card" style="width: 25rem; box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.5)">
                             <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXBkFUDdOrf9y01ww3Y6pkOx5RUdoIdNVa3g&usqp=CAU" alt="Card image cap">     
                             <div class="card-body">
                                 <h5 class="card-title" style="text-align: center;"><strong>Sorteo Microsoft Surface Pro Versión 2021</strong></h5>
                                 <p class="card-text"  style="text-align: center;">${sorteo.descripcionPremio}</p>
-                                <a href="#">más detalles...</a>
+                                <a>más detalles...</a>
                             </div>
                         </div>
                     </g:each>
                     <div style="display:flex; justify-content: center; width: 25rem; align-items: center; margin-top: 2rem">
-                        <a href="#">
-                            <i class="fa fa-times-circle" style="font-size: 4rem; color: #F24726;" ></i>
-                        </a>
+                        <g:form>
+                            <button type="submit">
+                                <i class="fa fa-times-circle" style="font-size: 4rem; color: #F24726;" ></i>
+                            </button>
+                        </g:form>
                         <h5 class="text-muted" style="padding-inline: 10%; font-size: 25px;" >Participar?</h5>
-                        <a href="#">
-                            <i class="fa fa-check-circle" style="font-size: 4rem; color: #8FD14F;"></i>
-                        </a>
+                        <g:form>
+                            <button type="submit">
+                                <i class="fa fa-check-circle" style="font-size: 4rem; color: #8FD14F;"></i>
+                            </button>
+                        </g:form>
                     </div>
                 </div>
             </div>
