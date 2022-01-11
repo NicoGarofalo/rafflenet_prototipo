@@ -49,7 +49,7 @@ class VinculoSpec extends Specification implements DomainUnitTest<Vinculo> {
         when:
             Vinculo vinculoParticipante = new Vinculo(participante,sorteoCreado)
             vinculoParticipante.vincular()
-            participante.misVinculos << vinculoParticipante
+            //participante.misVinculos << vinculoParticipante
         then:
             sorteoCreado.obtenerCantidadParticipante().equals(1)
             participante.obtenerCantidadVinculos().equals(1)

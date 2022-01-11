@@ -7,7 +7,6 @@ class Sorteo {
     String descripcionPremio
     String imagenPremio
     LocalDate fechaVencimiento
-    int tipo
     Set<Tematica> tematicas = []
     Set<Usuario> participantes = []
     Set<Cupon> cupones = []
@@ -20,7 +19,6 @@ class Sorteo {
         descripcionPremio blank: false, nullable: false
         imagenPremio blank: false, nullable: true
         fechaVencimiento blank: false, nullable: false
-        tipo blank: false, nullable: false
         tematicas blank: false, nullable: false
         estadistica nullable: false
         ganadorSorteo nullable: true
