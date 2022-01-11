@@ -8,13 +8,18 @@ class ParticipanteController {
 
     def index() {
         [
-            sorteoActual: getSorteo()
+            sorteoActual: sorteos,
+            contActual: contAct
         ]
     }
     def getSorteo() {
-        if(contAct >= sorteos.size()) return sorteoActual;
-        sorteoActual = sorteos[contAct];
-        contAct++;
-        return sorteoActual;
+        if(contAct >= sorteos.size()) render (view:'index', model:[sorteoActual: sorteos[contAct]])
+        sorteoActual = sorteos[contAct]
+        contAct++
+        render (view:'index', model:[sorteoActual: sorteos[contAct]])
+    }
+
+    def test(){
+        render "hola de nuevo"
     }
 }
